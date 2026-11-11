@@ -1,0 +1,16 @@
+{
+  "name": "acuifero-kit",
+  "owner": { "name": "Acuífero" },
+  "metadata": {
+    "description": "Kit de agentes y skills para hidrogeología y geología ambiental."
+  },
+  "plugins": [
+    {
+      "name": "acuifero",
+      "source": "./kit",
+      "description": "Trece agentes y nueve skills con cálculos probados: ensayos de bombeo, balance iónico y Piper, tendencias, piezometría, calibración de modelos, normativa, terreno, informes y revisión.",
+      "version": "1.0.0",
+      "category": "productivity"
+    }
+  ]
+}

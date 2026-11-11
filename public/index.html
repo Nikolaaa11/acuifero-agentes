@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acuífero · Agentes para hidrogeología</title>
+<meta name="description" content="Trece agentes y nueve skills con cálculos probados para hidrogeología y geología ambiental. Se instalan en Claude con una línea. Incluye mapa interactivo, calculadoras y manual.">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="Acuífero · Agentes para hidrogeología">
+<meta property="og:description" content="Un equipo de agentes para el agua subterránea: ensayos de bombeo, hidroquímica, monitoreo, modelos, normativa, terreno, informes y revisión.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<a class="saltar" href="#contenido">Ir al contenido</a>
+
+<header class="barra" id="barra">
+  <nav class="barra-in" aria-label="Principal">
+    <a class="marca" href="#inicio" aria-label="Acuífero, inicio">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 2.6c3.4 4.3 6.4 7.9 6.4 11.6a6.4 6.4 0 0 1-12.8 0C5.6 10.5 8.6 6.9 12 2.6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.6 15.2c1.1 1 2.2 1 3.4 0s2.3-1 3.4 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Acuífero</span>
+    </a>
+    <div class="enlaces" id="enlaces">
+      <a href="#agentes">Agentes</a>
+      <a href="#skills">Skills</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#calculadoras">Calculadoras</a>
+      <a href="#manual">Manual</a>
+      <a href="#hermes">Hermes</a>
+    </div>
+    <a class="btn btn-chico" href="#manual">Instalar</a>
+  </nav>
+</header>
+
+<main id="contenido">
+
+<!-- ============ Inicio ============ -->
+<section class="heroe" id="inicio">
+  <div class="ancho centro">
+    <p class="sobre aparecer">Kit de agentes para Claude</p>
+    <h1 class="aparecer">Acuífero</h1>
+    <p class="lema aparecer">Un equipo de agentes<br>para el agua subterránea.</p>
+    <p class="bajada aparecer"><span data-n="agentes">13</span> agentes y <span data-n="skills">9</span> skills con cálculos probados para hidrogeología y geología ambiental. Se instalan con una línea.</p>
+    <p class="acciones aparecer">
+      <a class="btn" href="#manual">Instalar el kit</a>
+      <a class="enlace-flecha" href="#mapa">Ver el mapa</a>
+    </p>
+  </div>
+
+  <figure class="corte aparecer" aria-label="Esquema de un pozo en bombeo con su cono de descenso">
+    <svg id="corte-svg" viewBox="0 0 1200 430" role="img" aria-labelledby="corte-titulo">
+      <title id="corte-titulo">Corte de un acuífero con un pozo de bombeo, dos pozos de observación y el cono de descenso</title>
+      <defs>
+        <linearGradient id="agua" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0071e3" stop-opacity=".16"/>
+          <stop offset="1" stop-color="#0071e3" stop-opacity=".03"/>
+        </linearGradient>
+        <pattern id="grano" width="18" height="18" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="4" r="1" fill="#c7c7cc"/><circle cx="12" cy="11" r="1.2" fill="#d2d2d7"/><circle cx="7" cy="15" r=".8" fill="#c7c7cc"/>
+        </pattern>
+      </defs>
+      <path d="M0 118 C 180 104, 330 126, 520 112 S 900 100, 1200 116 L1200 430 L0 430 Z" fill="#f5f5f7"/>
+      <path d="M0 118 C 180 104, 330 126, 520 112 S 900 100, 1200 116 L1200 430 L0 430 Z" fill="url(#grano)" opacity=".7"/>
+      <path d="M0 352 C 260 340, 520 362, 760 350 S 1040 344, 1200 354 L1200 430 L0 430 Z" fill="#e8e8ed"/>
+      <path d="M0 118 C 180 104, 330 126, 520 112 S 900 100, 1200 116" fill="none" stroke="#86868b" stroke-width="1.5"/>
+      <path fill="url(#agua)" d="M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205 L1200 352 L0 352 Z">
+        <animate attributeName="d" dur="9s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.12;.5;.62;1" keySplines=".4 0 .2 1;.4 0 .2 1;.4 0 .2 1;.4 0 .2 1"
+          values="M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205 L1200 352 L0 352 Z;M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205 L1200 352 L0 352 Z;M0 205 C 300 205, 520 215, 600 300 C 680 215, 900 205, 1200 205 L1200 352 L0 352 Z;M0 205 C 300 205, 520 215, 600 300 C 680 215, 900 205, 1200 205 L1200 352 L0 352 Z;M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205 L1200 352 L0 352 Z"/>
+      </path>
+      <path d="M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205" fill="none" stroke="#b9b9be" stroke-width="1.2" stroke-dasharray="5 6"/>
+      <path fill="none" stroke="#0071e3" stroke-width="2.2" stroke-linecap="round" d="M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205">
+        <animate attributeName="d" dur="9s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.12;.5;.62;1" keySplines=".4 0 .2 1;.4 0 .2 1;.4 0 .2 1;.4 0 .2 1"
+          values="M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205;M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205;M0 205 C 300 205, 520 215, 600 300 C 680 215, 900 205, 1200 205;M0 205 C 300 205, 520 215, 600 300 C 680 215, 900 205, 1200 205;M0 205 C 200 200, 400 200, 600 200 C 800 200, 1000 200, 1200 205"/>
+      </path>
+      <!-- pozo de bombeo -->
+      <rect x="592" y="84" width="16" height="262" rx="2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+      <path d="M592 300h16M592 310h16M592 320h16M592 330h16M592 340h16" stroke="#1d1d1f" stroke-width="1"/>
+      <path d="M600 84V62h46" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M640 56l8 6-8 6" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="656" y="67" class="rot rot-f">Q</text>
+      <!-- pozos de observación -->
+      <rect x="376" y="98" width="8" height="190" rx="1.5" fill="#fff" stroke="#6e6e73" stroke-width="1.3"/>
+      <rect x="836" y="94" width="8" height="190" rx="1.5" fill="#fff" stroke="#6e6e73" stroke-width="1.3"/>
+      <circle cx="380" r="4.5" fill="#0071e3" stroke="#fff" stroke-width="1.5" cy="200.5"><animate attributeName="cy" dur="9s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.12;.5;.62;1" keySplines=".4 0 .2 1;.4 0 .2 1;.4 0 .2 1;.4 0 .2 1" values="200.5;200.5;220.6;220.6;200.5"/></circle>
+      <circle cx="840" r="4.5" fill="#0071e3" stroke="#fff" stroke-width="1.5" cy="201"><animate attributeName="cy" dur="9s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.12;.5;.62;1" keySplines=".4 0 .2 1;.4 0 .2 1;.4 0 .2 1;.4 0 .2 1" values="201;201;218.1;218.1;201"/></circle>
+      <!-- cotas -->
+      <path d="M608 388H840M608 382v12M840 382v12" stroke="#86868b" stroke-width="1.1" fill="none"/>
+      <text x="724" y="410" text-anchor="middle" class="rot">r, distancia al pozo de observación</text>
+      <text x="1184" y="194" text-anchor="end" class="rot">nivel estático</text>
+      <text x="574" y="290" text-anchor="end" class="rot rot-azul">cono de descenso</text>
+      <text x="1184" y="340" text-anchor="end" class="rot">acuífero</text>
+      <text x="1184" y="382" text-anchor="end" class="rot">base impermeable</text>
+      <text x="16" y="100" class="rot">terreno</text>
+    </svg>
+    <figcaption>Un ensayo de bombeo, lo primero que interpreta el kit: el nivel baja alrededor del pozo y de esa curva salen la transmisividad y el almacenamiento.</figcaption>
+  </figure>
+
+  <div class="ancho">
+    <dl class="cifras aparecer">
+      <div><dt data-n="agentes">13</dt><dd>agentes especializados</dd></div>
+      <div><dt data-n="skills">9</dt><dd>skills con plantillas y scripts</dd></div>
+      <div><dt data-n="calculadoras">6</dt><dd>calculadoras en esta página</dd></div>
+      <div><dt data-n="pruebas">93</dt><dd>pruebas automáticas aprobadas</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ Qué trae ============ -->
+<section class="banda gris" id="que-trae">
+  <div class="ancho">
+    <p class="sobre aparecer">Qué trae</p>
+    <h2 class="aparecer">Hecho para el trabajo<br>de una consultora de aguas.</h2>
+    <div class="bento">
+      <article class="tarjeta grande aparecer">
+        <h3>Agentes que conocen el oficio</h3>
+        <p>Ensayos de bombeo, hidroquímica, monitoreo, modelos, normativa, terreno, informes y revisión. Cada agente tiene su método de trabajo, sabe qué pedir y dice qué entrega.</p>
+        <ul class="pasos-mini" id="mini-etapas" aria-label="Etapas de un proyecto"></ul>
+      </article>
+      <article class="tarjeta aparecer">
+        <h3>Cálculos que se pueden auditar</h3>
+        <p>Seis scripts en Python sin dependencias. Cada resultado deja el comando que lo produjo, para que cualquiera lo repita.</p>
+        <pre class="mini-codigo" aria-hidden="true">T = 2,303·Q / (4π·Δs)
+S = 2,25·T·t₀ / r²</pre>
+      </article>
+      <article class="tarjeta aparecer">
+        <h3>Nada se inventa</h3>
+        <p>Toda cifra sale de un archivo del proyecto o de una fuente abierta en la sesión. Lo que falta se marca como faltante, no se rellena.</p>
+      </article>
+      <article class="tarjeta aparecer">
+        <h3>Tus datos, tus reglas</h3>
+        <p>Los agentes no pegan datos de clientes en buscadores. Antes de cargar información confidencial a una IA, confirma la política de tu empresa y del contrato.</p>
+      </article>
+      <article class="tarjeta aparecer">
+        <h3>Tú decides y firmas</h3>
+        <p>Los agentes preparan y separan dato, cálculo e interpretación. La profesional a cargo revisa, decide y firma.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Agentes ============ -->
+<section class="banda" id="agentes">
+  <div class="ancho">
+    <p class="sobre aparecer">Agentes</p>
+    <h2 class="aparecer">Trece agentes,<br>siete etapas de un proyecto.</h2>
+    <p class="entrada aparecer">Elige una etapa o abre un agente para ver qué necesita, qué entrega y un pedido listo para copiar.</p>
+    <div class="filtros aparecer" id="filtros-etapa" role="group" aria-label="Filtrar agentes por etapa"></div>
+    <div class="grilla agentes" id="grilla-agentes" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ============ Skills ============ -->
+<section class="banda gris" id="skills">
+  <div class="ancho">
+    <p class="sobre aparecer">Skills</p>
+    <h2 class="aparecer">Nueve skills.<br>Seis de ellas calculan.</h2>
+    <p class="entrada aparecer">Los agentes piensan y redactan; las skills hacen las cuentas con scripts probados. Abre una para ver el resultado real con los datos de ejemplo.</p>
+    <div class="grilla skills" id="grilla-skills"></div>
+    <div class="muestras">
+      <figure class="muestra aparecer">
+        <img src="img/piper.svg" alt="Diagrama de Piper con seis muestras de ejemplo, generado por la skill balance-ionico" loading="lazy" width="680" height="632">
+        <figcaption><strong>Diagrama de Piper.</strong> Lo dibuja la skill balance-ionico, sin instalar nada más.</figcaption>
+      </figure>
+      <figure class="muestra aparecer">
+        <img src="img/piezometria.svg" alt="Vista previa de curvas piezométricas con catorce pozos de ejemplo y la dirección de flujo, generada por la skill mapa-piezometrico" loading="lazy" width="820" height="800">
+        <figcaption><strong>Piezometría rápida.</strong> Curvas para QGIS, gradiente y dirección de flujo con mapa-piezometrico.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Mapa ============ -->
+<section class="banda" id="mapa">
+  <div class="ancho">
+    <p class="sobre aparecer">Mapa</p>
+    <h2 class="aparecer">El mapa de todo.</h2>
+    <p class="entrada aparecer">Agentes, skills, calculadoras, programas y dónde se instala cada cosa. Cambia la vista, busca, filtra o sigue una ruta de trabajo paso a paso.</p>
+  </div>
+  <div class="ancho ancho-mapa">
+    <div class="mapa aparecer" id="mapa-caja">
+      <div class="mapa-barra">
+        <div class="segmento" role="group" aria-label="Vista del mapa" id="mapa-vistas">
+          <button type="button" data-vista="flujo" aria-pressed="true">Flujo</button>
+          <button type="button" data-vista="tipos" aria-pressed="false">Tipos</button>
+          <button type="button" data-vista="foco" aria-pressed="false">Conexiones</button>
+        </div>
+        <label class="campo-buscar">
+          <span class="oculto">Buscar en el mapa</span>
+          <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input type="search" id="mapa-buscar" placeholder="Buscar: piper, QGIS, informe…" autocomplete="off">
+        </label>
+        <label class="campo-ruta">
+          <span class="oculto">Seguir una ruta de trabajo</span>
+          <select id="mapa-ruta"><option value="">Seguir una ruta…</option></select>
+        </label>
+        <div class="mapa-zoom" role="group" aria-label="Acercar y alejar">
+          <button type="button" id="mapa-menos" aria-label="Alejar">−</button>
+          <button type="button" id="mapa-ajustar" aria-label="Ajustar a la ventana">Ajustar</button>
+          <button type="button" id="mapa-mas" aria-label="Acercar">+</button>
+          <button type="button" id="mapa-pantalla" aria-label="Pantalla completa" aria-pressed="false">
+            <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="mapa-capas" id="mapa-capas" role="group" aria-label="Mostrar u ocultar tipos"></div>
+      <div class="mapa-cuerpo">
+        <div class="mapa-lienzo" id="mapa-lienzo">
+          <svg id="mapa-svg" role="group" aria-label="Mapa interactivo del kit"></svg>
+        </div>
+        <aside class="mapa-panel" id="mapa-panel" aria-live="polite"></aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Calculadoras ============ -->
+<section class="banda gris" id="calculadoras">
+  <div class="ancho">
+    <p class="sobre aparecer">Calculadoras</p>
+    <h2 class="aparecer">Las cuentas de todos los días.</h2>
+    <p class="entrada aparecer">Las mismas fórmulas de las skills, en el navegador. Lo que escribes no sale de tu equipo.</p>
+    <div class="calc aparecer">
+      <div class="calc-pestanas" role="tablist" aria-label="Calculadoras" id="calc-pestanas"></div>
+      <div class="calc-cuerpo" id="calc-cuerpo"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Manual ============ -->
+<section class="banda" id="manual">
+  <div class="ancho">
+    <p class="sobre aparecer">Manual</p>
+    <h2 class="aparecer">Instalar y usar,<br>paso a paso.</h2>
+    <p class="entrada aparecer">Responde dos preguntas y el manual se arma para tu caso. Marca cada paso al terminarlo: tu avance queda guardado en este navegador.</p>
+
+    <div class="manual aparecer">
+      <div class="manual-eleccion">
+        <fieldset>
+          <legend>¿Dónde usas Claude?</legend>
+          <div class="segmento ancho-total" id="manual-donde">
+            <button type="button" data-v="code" aria-pressed="true">Claude Code o app de escritorio</button>
+            <button type="button" data-v="cowork" aria-pressed="false">Cowork o claude.ai</button>
+            <button type="button" data-v="hermes" aria-pressed="false">Hermes Agent</button>
+          </div>
+        </fieldset>
+        <fieldset id="manual-sistema-caja">
+          <legend>¿Qué computador tienes?</legend>
+          <div class="segmento" id="manual-sistema">
+            <button type="button" data-v="windows" aria-pressed="true">Windows</button>
+            <button type="button" data-v="mac" aria-pressed="false">Mac o Linux</button>
+          </div>
+        </fieldset>
+      </div>
+      <div class="avance" aria-hidden="true"><span id="avance-barra"></span></div>
+      <p class="avance-texto" id="avance-texto" aria-live="polite"></p>
+      <ol class="pasos" id="manual-pasos"></ol>
+    </div>
+
+    <h3 class="subtitulo aparecer" id="recetas">Recetas: qué pedir en cada caso</h3>
+    <p class="entrada chica aparecer">Elige lo que tienes que hacer y sigue los pasos. Cada uno trae el pedido exacto para copiar.</p>
+    <div class="recetas aparecer">
+      <div class="recetas-lista" id="recetas-lista" role="tablist" aria-label="Tareas"></div>
+      <div class="recetas-cuerpo" id="recetas-cuerpo"></div>
+    </div>
+
+    <h3 class="subtitulo aparecer">Cinco reglas para trabajar bien con agentes</h3>
+    <ol class="reglas">
+      <li class="aparecer"><strong>Un encargo, un agente.</strong> Dile cuál usar, qué archivo leer y qué debe devolver. No ve tu conversación anterior.</li>
+      <li class="aparecer"><strong>Datos en CSV, ordenados.</strong> Guarda la planilla original sin tocar y trabaja sobre una copia limpia, con una fila por medición.</li>
+      <li class="aparecer"><strong>Parte con inicio-proyecto.</strong> Deja escrito el país, el sistema de coordenadas, las unidades y las reglas de confidencialidad. Todos los agentes lo leen.</li>
+      <li class="aparecer"><strong>Pide el respaldo.</strong> Cada cifra debe venir con su archivo de origen y el comando que la calculó. Si no lo trae, pídelo.</li>
+      <li class="aparecer"><strong>Revisa antes de entregar.</strong> Pasa el resultado por hidro-revisor y léelo como leerías el trabajo de un colega nuevo.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ Hermes ============ -->
+<section class="banda gris" id="hermes">
+  <div class="ancho">
+    <p class="sobre aparecer">Hermes</p>
+    <h2 class="aparecer">¿Y Hermes?<br>Qué es y cuándo conviene.</h2>
+    <p class="entrada aparecer">Hermes Agent es un asistente de código abierto de Nous Research. No reemplaza a Claude: puede usar a Claude como cerebro y sumar cosas que Claude no hace por sí solo.</p>
+
+    <div class="dos">
+      <article class="tarjeta blanca aparecer">
+        <h3>Lo que suma Hermes</h3>
+        <ul class="lista">
+          <li><strong>Vive en tus chats.</strong> Telegram, WhatsApp, Signal, Discord, Slack y correo, con una sola memoria.</li>
+          <li><strong>Sigue prendido.</strong> Corre en la nube o en un servidor y hace tareas programadas con tu computador apagado.</li>
+          <li><strong>Cualquier modelo.</strong> Claude, modelos gratuitos o modelos instalados en tu equipo.</li>
+          <li><strong>Aprende solo.</strong> Crea y mejora sus propias skills a partir de lo que va haciendo.</li>
+        </ul>
+      </article>
+      <article class="tarjeta blanca aparecer">
+        <h3>Lo que Claude ya hace</h3>
+        <ul class="lista">
+          <li>Memoria entre sesiones y skills.</li>
+          <li>Subagentes como los de este kit.</li>
+          <li>Tareas programadas y control del navegador.</li>
+          <li>Trabajo directo sobre tus carpetas y archivos.</li>
+        </ul>
+        <p class="nota">Si no necesitas un asistente en WhatsApp o Telegram prendido todo el día, con Claude basta.</p>
+      </article>
+    </div>
+
+    <div class="dos">
+      <article class="tarjeta blanca aparecer">
+        <h3>Cómo se conecta con Claude</h3>
+        <ol class="lista num">
+          <li><strong>Con una clave de la API de Anthropic.</strong> Se paga por uso, aparte de la suscripción.</li>
+          <li><strong>Con Claude Max y créditos de uso extra.</strong> Hermes gasta solo esos créditos, no lo incluido en el plan. Con Claude Pro esta vía no funciona.</li>
+        </ol>
+        <p class="nota">Según la documentación de Hermes al 11 de noviembre de 2026. Los planes cambian: confírmalo antes de pagar.</p>
+      </article>
+      <article class="tarjeta blanca aparecer">
+        <h3>¿Me conviene?</h3>
+        <p class="chico">Marca lo que necesitas.</p>
+        <div class="marcas" id="hermes-marcas">
+          <label><input type="checkbox" value="chat"> Escribirle por WhatsApp o Telegram</label>
+          <label><input type="checkbox" value="siempre"> Que trabaje con mi computador apagado</label>
+          <label><input type="checkbox" value="modelos"> Usar modelos gratuitos o locales</label>
+        </div>
+        <p class="veredicto" id="hermes-veredicto" aria-live="polite"></p>
+      </article>
+    </div>
+
+    <div class="tabla-caja aparecer">
+      <table>
+        <caption>Nombres parecidos que conviene no confundir</caption>
+        <thead><tr><th scope="col">Nombre</th><th scope="col">Qué es</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Hermes Agent</th><td>El asistente de Nous Research. Se usa por terminal, por chat o con su app de escritorio.</td></tr>
+          <tr><th scope="row">Hermes Desktop</th><td>La app de escritorio oficial del mismo Hermes Agent, para Windows, Mac y Linux.</td></tr>
+          <tr><th scope="row">Hermes 3 y Hermes 4</th><td>Modelos de lenguaje de Nous Research. No son una app.</td></tr>
+          <tr><th scope="row">OpenClaw</th><td>Otro asistente que funciona por WhatsApp y Telegram. Es la competencia directa de Hermes.</td></tr>
+          <tr><th scope="row">Apps llamadas «Hermes AI»</th><td>Aplicaciones de terceros en las tiendas. La oficial está en hermes-agent.nousresearch.com.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fuentes aparecer">Fuentes: <a href="https://hermes-agent.nousresearch.com/" rel="noopener">sitio oficial de Hermes Agent</a>, <a href="https://hermes-agent.nousresearch.com/docs/integrations/providers" rel="noopener">documentación de proveedores</a>, <a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/skills" rel="noopener">documentación de skills</a>.</p>
+  </div>
+</section>
+
+<!-- ============ Preguntas ============ -->
+<section class="banda" id="preguntas">
+  <div class="ancho angosto">
+    <p class="sobre aparecer">Preguntas</p>
+    <h2 class="aparecer">Lo que conviene saber.</h2>
+    <div class="preguntas" id="lista-preguntas">
+      <details class="aparecer"><summary>¿Cuánto cuesta?</summary><p>El kit es gratuito y de código abierto, con licencia MIT. Necesitas un plan de Claude que incluya Claude Code o Cowork. Hermes Agent también es gratuito, pero el modelo que use se paga aparte.</p></details>
+      <details class="aparecer"><summary>¿Puedo cargar datos de clientes?</summary><p>Eso lo define tu empresa y el contrato del proyecto, no el kit. Antes de subir información confidencial a cualquier herramienta de IA, confirma qué permite la política de tu empresa. Mientras tanto, practica con los datos de ejemplo, que son ficticios. Las calculadoras de esta página corren en tu navegador y no envían nada.</p></details>
+      <details class="aparecer"><summary>¿Los resultados son confiables?</summary><p>Los cálculos están verificados con <span data-n="pruebas">93</span> pruebas automáticas contra valores conocidos, y puedes repetirlos con el mismo comando. La interpretación de los agentes es un borrador experto y puede equivocarse: revísala como revisarías el trabajo de un colega nuevo y pásala por hidro-revisor.</p></details>
+      <details class="aparecer"><summary>¿Sirve fuera de Chile?</summary><p>Sí. Los métodos son generales. La búsqueda de normativa parte por Chile; para otro país, indícalo en el archivo CLAUDE.md del proyecto y hidro-normativa buscará las fuentes oficiales de ese país.</p></details>
+      <details class="aparecer"><summary>¿Necesito saber programar?</summary><p>No. Le pides las cosas a Claude en español y él corre los scripts. Solo necesitas tener Python instalado; el instalador te avisa si falta.</p></details>
+      <details class="aparecer"><summary>¿Cómo lo actualizo o lo quito?</summary><p>Para actualizar, corre de nuevo el instalador: reemplaza lo anterior y guarda respaldo de lo que hayas modificado. Para quitarlo:</p><div id="quitar-comandos"></div></details>
+      <details class="aparecer"><summary>¿Qué no hace el kit?</summary><p>No reemplaza el criterio profesional, no firma informes y no garantiza que una norma esté vigente: la busca y la cita para que tú la confirmes. Los scripts cubren Theis y Cooper-Jacob, no todos los métodos de ensayo; para Hantush, Neuman o slug tests el agente escribe el cálculo aparte y lo avisa.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pie">
+  <div class="ancho">
+    <p><strong>Acuífero</strong> <span id="pie-version"></span> · código abierto con licencia MIT · <a id="pie-repo" href="#" rel="noopener">ver en GitHub</a></p>
+    <p>Kit independiente. No es un producto oficial de Anthropic ni de Nous Research, y no pertenece a ninguna consultora. Claude y Hermes son marcas de sus respectivos dueños. Los resultados son un apoyo al trabajo profesional y deben ser revisados por quien firma. Los datos de ejemplo son ficticios.</p>
+  </div>
+</footer>
+
+<dialog class="ficha" id="ficha" aria-labelledby="ficha-titulo">
+  <div class="ficha-in">
+    <button type="button" class="ficha-cerrar" id="ficha-cerrar" aria-label="Cerrar">
+      <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div id="ficha-cuerpo"></div>
+  </div>
+</dialog>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<script src="datos.js"></script>
+<script src="calculos.js"></script>
+<script src="app.js"></script>
+<script src="mapa.js"></script>
+</body>
+</html>
