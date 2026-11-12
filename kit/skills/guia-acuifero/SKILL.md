@@ -56,7 +56,7 @@ Si preguntan si el kit quedó bien instalado o si un cálculo no corre, ejecuta 
 python "<carpeta de la skill>/scripts/comprobar.py"
 ```
 
-Corre cada script con sus datos de ejemplo y compara con el valor esperado. No modifica nada. En Mac o Linux usa `python3`.
+Corre cada script con sus datos de ejemplo y compara con el valor esperado. No modifica nada. En Mac o Linux usa `python3`. En Windows, si `python` no responde, prueba con `py`.
 
 ## Cómo delegar
 

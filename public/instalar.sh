@@ -164,8 +164,13 @@ echo "  $n_skills skills en $DESTINO/skills"
 if [ "$HERMES" = 1 ]; then echo "  $n_hermes skills en Hermes Agent ($DIR_HERMES)"; fi
 if [ "$respaldos" -gt 0 ]; then amarillo "  $respaldos elementos anteriores guardados en $DESTINO/acuifero-respaldo"; fi
 
+# Busca un Python 3.8 o posterior que de verdad funcione (en algunos equipos "python3" es solo un acceso a la tienda)
 PY=""
-if command -v python3 >/dev/null 2>&1; then PY=python3; elif command -v python >/dev/null 2>&1; then PY=python; fi
+for candidato in python3 python; do
+  if command -v "$candidato" >/dev/null 2>&1 && "$candidato" -c "import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)" >/dev/null 2>&1; then
+    PY="$candidato"; break
+  fi
+done
 if [ -n "$PY" ] && [ -f "$DESTINO/skills/guia-acuifero/scripts/comprobar.py" ]; then
   if linea="$("$PY" "$DESTINO/skills/guia-acuifero/scripts/comprobar.py" --breve 2>&1 | tail -n 1)"; then verde "  $linea"; else amarillo "  $linea"; fi
 fi

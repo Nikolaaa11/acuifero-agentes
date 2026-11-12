@@ -180,14 +180,18 @@ Escribir "  $($skills.Count) skills en $dirSkills"
 if ($Hermes) { Escribir "  $nHermes skills en Hermes Agent ($dirHermes)" }
 if ($respaldos -gt 0) { Escribir "  $respaldos elementos anteriores guardados en $(Join-Path $Destino 'acuifero-respaldo')" "Yellow" }
 
-$py = Get-Command python -ErrorAction SilentlyContinue
-$tienePython = $false
-if ($py) { try { $v = & python --version 2>&1; if ("$v" -match "Python 3") { $tienePython = $true } } catch {} }
+$pyCmd = $null
+foreach ($candidato in @("python", "py")) {
+    if (Get-Command $candidato -ErrorAction SilentlyContinue) {
+        try { $v = & $candidato --version 2>&1; if ("$v" -match "Python 3") { $pyCmd = $candidato; break } } catch {}
+    }
+}
+$tienePython = [bool]$pyCmd
 if ($tienePython) {
     $verificador = Join-Path $dirSkills "guia-acuifero\scripts\comprobar.py"
     if (Test-Path $verificador) {
         try {
-            $linea = & python $verificador --breve 2>&1 | Select-Object -Last 1
+            $linea = & $pyCmd $verificador --breve 2>&1 | Select-Object -Last 1
             if ($LASTEXITCODE -eq 0) { Escribir "  $linea" "Green" } else { Escribir "  $linea" "Yellow" }
         } catch { Escribir "  No se pudo correr la comprobacion automatica." "Yellow" }
     }
