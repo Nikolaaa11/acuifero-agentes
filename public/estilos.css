@@ -101,6 +101,7 @@ h3 { font-size: 21px; line-height: 1.2; font-weight: 600; letter-spacing: -.02em
 .lema { font-size: clamp(30px, 5.2vw, 60px); line-height: 1.08; font-weight: 600; letter-spacing: -.035em; margin-top: 14px; color: var(--tinta); }
 .bajada { font-size: clamp(18px, 2vw, 21px); color: var(--tinta-2); max-width: 34em; margin: 22px auto 0; line-height: 1.42; }
 .acciones { display: flex; gap: 26px; justify-content: center; align-items: center; margin-top: 30px; flex-wrap: wrap; }
+.dedicatoria { margin-top: 30px; font-size: 16px; color: var(--tinta-2); letter-spacing: -.012em; }
 .corte { width: min(1360px, 100% - 44px); margin: clamp(44px, 6vw, 72px) auto 0; }
 .corte svg { display: block; width: 100%; height: auto; border-radius: var(--radio-g); background: var(--fondo-3); border: 1px solid var(--linea-suave); }
 .corte .rot { font: 500 13px var(--fuente); fill: var(--tinta-3); letter-spacing: -.01em; }
@@ -300,6 +301,7 @@ h3 { font-size: 21px; line-height: 1.2; font-weight: 600; letter-spacing: -.02em
 
 /* ---------- Manual ---------- */
 .manual { margin-top: 44px; background: var(--fondo-2); border-radius: var(--radio-g); padding: clamp(22px, 4vw, 40px); }
+.manual-bienvenida { font-size: 19px; font-weight: 600; letter-spacing: -.02em; color: var(--tinta); margin-bottom: 26px; padding-bottom: 22px; border-bottom: 1px solid var(--linea); }
 .manual-eleccion { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 legend { font-size: 15px; font-weight: 600; margin-bottom: 10px; padding: 0; }
@@ -400,6 +402,7 @@ tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
 /* ---------- Pie ---------- */
 .pie { background: var(--fondo-2); padding: 34px 0 44px; font-size: 12.5px; line-height: 1.5; color: var(--tinta-2); letter-spacing: -.005em; }
 .pie p + p { margin-top: 8px; max-width: 70em; }
+.pie .pie-dedicatoria { font-size: 14px; color: var(--tinta); margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--linea); max-width: none; }
 .pie strong { color: var(--tinta); }
 
 /* ---------- Ficha ---------- */

@@ -1,5 +1,7 @@
 # Acuífero
 
+*Con cariño para Patricia Guerrero, la mejor geóloga de Chile.*
+
 Un equipo de agentes para el agua subterránea: trece agentes y nueve skills con cálculos probados para hidrogeología y geología ambiental. Se instalan en Claude (Claude Code, Cowork o claude.ai) y también en Hermes Agent.
 
 **Sitio, mapa interactivo, calculadoras y manual:** https://acuifero-agentes.vercel.app
