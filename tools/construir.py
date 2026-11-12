@@ -17,6 +17,12 @@ import subprocess
 import sys
 import zipfile
 
+for _consola in (sys.stdout, sys.stderr):
+    try:
+        _consola.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KIT = os.path.join(RAIZ, "kit")
 PUB = os.path.join(RAIZ, "public")
@@ -169,8 +175,9 @@ def main():
 
     # ---- Pruebas ----
     r = correr([os.path.join(RAIZ, "tools", "probar_scripts.py")])
-    if r.returncode != 0:
-        print(r.stdout[-2000:])
+    if r.returncode != 0 or not r.stdout:
+        print((r.stdout or "")[-2000:])
+        print((r.stderr or "")[-1000:])
         print("Las pruebas de los scripts fallaron: no se empaqueta.")
         return 1
     n_pruebas = sum(1 for linea in r.stdout.splitlines() if linea.startswith("  bien"))

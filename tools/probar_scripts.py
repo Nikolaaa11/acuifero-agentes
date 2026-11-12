@@ -7,6 +7,12 @@ import subprocess
 import sys
 import tempfile
 
+for _consola in (sys.stdout, sys.stderr):
+    try:
+        _consola.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SK = os.path.join(RAIZ, "kit", "skills")
 
