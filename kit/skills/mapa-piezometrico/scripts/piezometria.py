@@ -325,7 +325,17 @@ def guardar_svg(ruta, puntos, g, cv, pl):
         f.write("\n".join(o))
 
 
+def salida_utf8():
+    """Escribe siempre en UTF-8, también cuando Windows redirige la salida con otra codificación."""
+    for flujo in (sys.stdout, sys.stderr):
+        try:
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv=None):
+    salida_utf8()
     p = argparse.ArgumentParser(description="Curvas piezométricas rápidas y gradiente regional.")
     p.add_argument("csv", help="CSV con punto, x, y, nivel")
     p.add_argument("--intervalo", type=float, default=None, help="Equidistancia de las curvas en m (por defecto, automática)")

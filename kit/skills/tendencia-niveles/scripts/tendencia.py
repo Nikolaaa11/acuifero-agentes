@@ -157,7 +157,17 @@ def fmt(v, cifras=4):
     return f"{v:.{cifras}g}"
 
 
+def salida_utf8():
+    """Escribe siempre en UTF-8, también cuando Windows redirige la salida con otra codificación."""
+    for flujo in (sys.stdout, sys.stderr):
+        try:
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv=None):
+    salida_utf8()
     p = argparse.ArgumentParser(description="Mann-Kendall, pendiente de Sen y valores anómalos por punto.")
     p.add_argument("csv", help="CSV con columnas fecha, punto, valor")
     p.add_argument("--alfa", type=float, default=0.05, help="Nivel de significancia (por defecto 0,05)")

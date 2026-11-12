@@ -258,6 +258,52 @@ def recuperacion(t_d, s_res, q, tp_d):
         "descenso_residual_en_t_t1": a0,
         "r2": r2,
         "puntos_usados": len(idx),
+        "tt_desde": 10 ** x[idx[0]],
+        "tt_hasta": 10 ** x[idx[-1]],
+    }
+
+
+def diagnostico(t_d, s, q):
+    """Derivada del descenso respecto de ln(t) (Bourdet) y lectura del tramo final."""
+    pares = [(math.log(t), d) for t, d in zip(t_d, s) if t > 0 and d > 0]
+    der = []
+    for i in range(1, len(pares) - 1):
+        (x0, s0), (x1, s1), (x2, s2) = pares[i - 1], pares[i], pares[i + 1]
+        d1, d2 = x1 - x0, x2 - x1
+        if d1 <= 0 or d2 <= 0:
+            continue
+        der.append((math.exp(x1), ((s1 - s0) / d1 * d2 + (s2 - s1) / d2 * d1) / (d1 + d2)))
+    if len(der) < 6:
+        return None
+
+    def mediana(lista):
+        lista = sorted(lista)
+        k = len(lista) // 2
+        return lista[k] if len(lista) % 2 else (lista[k - 1] + lista[k]) / 2.0
+
+    n = len(der)
+    tercio = max(2, n // 3)
+    medio = mediana([v for _, v in der[n - 2 * tercio:n - tercio]])
+    final = mediana([v for _, v in der[-tercio:]])
+    if final <= 0:
+        lectura = ("La derivada final es nula o negativa: el nivel se estabilizó. Indica recarga, goteo fuerte "
+                   "o un borde de nivel constante; Theis no describe ese tramo.")
+    else:
+        cambio = (final - medio) / medio if medio > 0 else 0.0
+        if abs(cambio) <= 0.25:
+            lectura = "Derivada estable en el tramo final: flujo radial de acción infinita. Theis y Cooper-Jacob son aplicables ahí."
+        elif cambio < 0:
+            lectura = ("La derivada cae en el tramo final: posible goteo, recarga o borde de nivel constante. "
+                       "Ajustar ese tramo con Theis sobreestima T.")
+        else:
+            lectura = ("La derivada sube en el tramo final: posible borde impermeable, acuífero limitado o caudal en aumento. "
+                       "Revisa antes de adoptar un solo valor de T.")
+    return {
+        "derivada_tramo_medio_m": medio,
+        "derivada_tramo_final_m": final,
+        "T_derivada_m2_d": q / (4.0 * math.pi * final) if final > 0 else None,
+        "lectura": lectura,
+        "derivada": [{"t_min": t * 1440.0, "ds_dlnt_m": v} for t, v in der],
     }
 
 
@@ -322,7 +368,17 @@ def graficar(ruta, t_min, s, res, q, r):
     return True
 
 
+def salida_utf8():
+    """Escribe siempre en UTF-8, también cuando Windows redirige la salida con otra codificación."""
+    for flujo in (sys.stdout, sys.stderr):
+        try:
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv=None):
+    salida_utf8()
     p = argparse.ArgumentParser(description="Interpretación de ensayos de bombeo (Cooper-Jacob, Theis, recuperación).")
     p.add_argument("csv", help="CSV con columnas t_min y s_m")
     p.add_argument("--q", type=float, required=True, help="Caudal de bombeo en L/s")
@@ -380,12 +436,15 @@ def main(argv=None):
             x["K_m_s"] = x["K_m_d"] / 86400.0
     avisos = advertencias(res, a.r, a.pozo_bombeo, len([1 for d in s if d > 0]))
 
+    diag = None if a.recuperacion else diagnostico(t_d, s, q)
     if a.grafico and not a.recuperacion:
         graficar(a.grafico, t_min, s, res, q, a.r)
+    elif a.grafico:
+        print("Aviso: el gráfico solo está disponible para el ensayo de bombeo, no para la recuperación.", file=sys.stderr)
 
     if a.json:
         print(json.dumps({"entrada": {"archivo": a.csv, "Q_L_s": a.q, "Q_m3_d": q, "r_m": a.r, "b_m": a.b,
-                                      "lecturas": len(datos)}, "resultados": res, "advertencias": avisos},
+                                      "lecturas": len(datos)}, "resultados": res, "diagnostico": diag, "advertencias": avisos},
                          ensure_ascii=False, indent=2))
         return 0
 
@@ -406,9 +465,18 @@ def main(argv=None):
         if x["metodo"] == "Theis":
             print(f"Theis: error cuadrático medio del ajuste {fmt(x['rmse_m'])} m.")
         if x["metodo"] == "Recuperación de Theis":
-            print(f"\nRecuperación: pendiente {fmt(x['pendiente_m_por_ciclo'])} m por ciclo de t/t'. "
+            print(f"\nRecuperación: tramo usado t/t' entre {fmt(x['tt_desde'])} y {fmt(x['tt_hasta'])} "
+                  f"({x['puntos_usados']} lecturas, las más cercanas al final de la recuperación).")
+            print(f"Pendiente {fmt(x['pendiente_m_por_ciclo'])} m por ciclo de t/t'. "
                   f"Descenso residual extrapolado en t/t' = 1: {fmt(x['descenso_residual_en_t_t1'])} m "
                   "(si se aleja de cero, hay bordes o recarga).")
+    if diag:
+        print("\n## Diagnóstico\n")
+        print(f"- Derivada del descenso, ds/d(ln t): {fmt(diag['derivada_tramo_medio_m'])} m en el tramo medio "
+              f"y {fmt(diag['derivada_tramo_final_m'])} m en el tramo final.")
+        if diag["T_derivada_m2_d"]:
+            print(f"- T estimada desde la derivada final: {fmt(diag['T_derivada_m2_d'])} m²/d.")
+        print("- " + diag["lectura"])
     if avisos:
         print("\n## Advertencias\n")
         for av in avisos:

@@ -68,7 +68,17 @@ def convertir(valor, desde, hacia):
     raise ValueError(f"«{desde}» es de {md[0].split(' (')[0]} y «{hacia}» es de {mh[0].split(' (')[0]}: no se pueden convertir entre sí.")
 
 
+def salida_utf8():
+    """Escribe siempre en UTF-8, también cuando Windows redirige la salida con otra codificación."""
+    for flujo in (sys.stdout, sys.stderr):
+        try:
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv=None):
+    salida_utf8()
     p = argparse.ArgumentParser(description="Conversor de unidades para hidrogeología.")
     p.add_argument("valor", nargs="?", type=float)
     p.add_argument("desde", nargs="?")

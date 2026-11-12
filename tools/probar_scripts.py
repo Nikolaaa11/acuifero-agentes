@@ -23,7 +23,9 @@ def ok(nombre, cond, detalle=""):
 
 
 def correr(script, *args):
-    r = subprocess.run([sys.executable, os.path.join(SK, script), *args], capture_output=True, text=True, encoding="utf-8")
+    # Igual que un Windows sin configurar: sin PYTHONIOENCODING ni PYTHONUTF8, con la salida capturada
+    entorno = {k: v for k, v in os.environ.items() if k not in ("PYTHONIOENCODING", "PYTHONUTF8")}
+    r = subprocess.run([sys.executable, os.path.join(SK, script), *args], capture_output=True, text=True, encoding="utf-8", env=entorno)
     return r.returncode, r.stdout, r.stderr
 
 
@@ -65,9 +67,14 @@ ok("Cooper-Jacob recupera T = 450 m2/d", cerca(por["Cooper-Jacob"]["T_m2_d"], 45
 ok("Cooper-Jacob recupera S = 2e-4", cerca(por["Cooper-Jacob"]["S"], 2e-4, 0.08), f"{por['Cooper-Jacob']['S']:.3e}")
 ok("K = T/b", cerca(por["Theis"]["K_m_d"], por["Theis"]["T_m2_d"] / 40, 1e-9))
 ok("u maximo de Cooper-Jacob bajo 0,05", por["Cooper-Jacob"]["u_maximo"] < 0.05, f"{por['Cooper-Jacob']['u_maximo']:.3f}")
+ok("la derivada reconoce flujo radial y da T cerca de 450 m2/d", "flujo radial" in d["diagnostico"]["lectura"] and cerca(d["diagnostico"]["T_derivada_m2_d"], 450, 0.10), f"{d['diagnostico']['T_derivada_m2_d']:.0f}")
 c, out, err = correr(BOMBEO, ej("ensayo-bombeo", "recuperacion.csv"), "--q", "12", "--recuperacion", "--tp", "1440", "--json")
 d = json.loads(out)
 ok("Recuperacion recupera T = 450 m2/d", c == 0 and cerca(d["resultados"][0]["T_m2_d"], 450, 0.05), f"{d['resultados'][0]['T_m2_d']:.1f}")
+c, out, err = correr(BOMBEO, ej("ensayo-bombeo", "recuperacion.csv"), "--q", "12", "--recuperacion", "--tp", "1440", "--grafico", "x.png")
+ok("recuperacion en Markdown informa el tramo y avisa que no hay grafico", c == 0 and "tramo usado t/t'" in out and "solo está disponible" in err, err.strip()[:80])
+c, out, err = correr(BOMBEO, ej("ensayo-bombeo", "ensayo-bombeo.csv"), "--q", "12", "--r", "35", "--b", "40")
+ok("Markdown con simbolos (t0, m2) sin configurar la consola", c == 0 and "t₀" in out and "## Diagnóstico" in out and "m²/d" in out, err.strip()[:120])
 with tempfile.TemporaryDirectory() as tmp:
     ruta = os.path.join(tmp, "punto_y_coma.csv")
     with open(ej("ensayo-bombeo", "ensayo-bombeo.csv"), encoding="utf-8") as f:
@@ -146,6 +153,8 @@ with tempfile.TemporaryDirectory() as tmp:
     ok("grilla ASCII con encabezado", asc[0].startswith("ncols") and len(asc[6].split()) == int(asc[0].split()[1]))
     with open(os.path.join(tmp, "vista.svg"), encoding="utf-8") as f:
         ok("vista SVG escrita", f.read().count("<path") >= 4)
+    c, out, err = correr(PIEZO, ej("mapa-piezometrico", "piezometria.csv"), "--salida", tmp)
+    ok("salida en Markdown", c == 0 and "Dirección de flujo" in out and "(SO)" in out, err.strip()[:120])
     zz = interpolar([("A", 0, 0, 10.0), ("B", 100, 0, 20.0), ("C", 0, 100, 30.0)], celda=50, margen=0)["z"]
     ok("la interpolacion respeta los valores medidos", zz[0][0] == 10.0 and zz[0][2] == 20.0 and zz[2][0] == 30.0)
 
@@ -165,6 +174,10 @@ casos = [(1e-5, "m/s", "m/d", 0.864), (12, "L/s", "m3/d", 1036.8), (450, "m2/d",
 for v, a, b, esperado in casos:
     r = convertir(v, a, b)[0]
     ok(f"{v:g} {a} = {esperado:.6g} {b}", cerca(r, esperado, 1e-5), f"{r:.6g}")
+c, out, err = correr("unidades-hidro/scripts/unidades.py", "1", "m/año", "mm/d")
+ok("desde la consola: 1 m/año = 2,73785 mm/d", c == 0 and "2.73785 mm/d" in out and "conductividad hidráulica" in out, (out + err).strip()[:100])
+c, out, err = correr("unidades-hidro/scripts/unidades.py", "--lista")
+ok("lista de unidades con acentos", c == 0 and "área" in out)
 try:
     convertir(1, "m/s", "L/s")
     ok("rechaza magnitudes distintas", False)

@@ -92,7 +92,17 @@ def fmt(v, c=3):
     return f"{v:.{c}g}"
 
 
+def salida_utf8():
+    """Escribe siempre en UTF-8, también cuando Windows redirige la salida con otra codificación."""
+    for flujo in (sys.stdout, sys.stderr):
+        try:
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv=None):
+    salida_utf8()
     p = argparse.ArgumentParser(description="Estadísticos de calibración (observado contra simulado).")
     p.add_argument("csv", help="CSV con punto, observado, simulado y, opcional, grupo")
     p.add_argument("--umbral", type=float, default=10.0, help="RMSE normalizado de referencia en %% (por defecto 10)")

@@ -82,7 +82,7 @@ tools/                  pruebas y empaquetado
 ## Desarrollo
 
 ```bash
-python tools/probar_scripts.py     # 64 pruebas de los scripts contra valores conocidos
+python tools/probar_scripts.py     # 70 pruebas de los scripts contra valores conocidos
 node tools/probar_web.js           # 29 pruebas de las fórmulas de las calculadoras
 python tools/construir.py          # valida el kit, corre las pruebas y genera public/datos.js y los .zip
 python tools/generar_ejemplos.py   # regenera los datos de ejemplo

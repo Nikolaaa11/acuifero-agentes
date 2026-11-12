@@ -86,7 +86,7 @@ def comprimir(destino, pares):
 
 
 def correr(args):
-    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    env = {k: v for k, v in os.environ.items() if k not in ("PYTHONIOENCODING", "PYTHONUTF8")}
     return subprocess.run([sys.executable] + args, capture_output=True, text=True, encoding="utf-8", env=env)
 
 

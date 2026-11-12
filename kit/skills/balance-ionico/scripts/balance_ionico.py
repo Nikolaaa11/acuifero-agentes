@@ -281,7 +281,17 @@ def piper_svg(resultados, ruta):
     return n
 
 
+def salida_utf8():
+    """Escribe siempre en UTF-8, también cuando Windows redirige la salida con otra codificación."""
+    for flujo in (sys.stdout, sys.stderr):
+        try:
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main(argv=None):
+    salida_utf8()
     p = argparse.ArgumentParser(description="Balance iónico, facies y diagrama de Piper.")
     p.add_argument("csv", help="CSV con iones mayores en mg/L")
     p.add_argument("--limite", type=float, default=5.0, help="Error aceptable en %% (por defecto 5; dudosa hasta el doble)")
