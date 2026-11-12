@@ -156,6 +156,10 @@ def main():
         for s in a.get("usa", []):
             if s not in ids_skills:
                 errores.append(f"catálogo: {a['id']} usa la skill inexistente «{s}»")
+    for linea in cat.get("lineas", []):
+        for ag in linea["agentes"]:
+            if ag not in {a["id"] for a in agentes}:
+                errores.append(f"catálogo: la línea «{linea['nombre']}» menciona al agente inexistente «{ag}»")
     for r in cat["rutas"]:
         for p in r["pasos"]:
             if p not in ids_todos:
@@ -229,7 +233,7 @@ def main():
     datos = {
         "version": cat["version"], "repo": cat["repo"], "sitio": cat["sitio"],
         "etapas": cat["etapas"], "agentes": agentes, "skills": skills, "apps": cat["apps"],
-        "calculadoras": cat["calculadoras"], "rutas": cat["rutas"], "pruebas": n_pruebas, "pruebas_web": n_web, "salidas": salidas,
+        "calculadoras": cat["calculadoras"], "rutas": cat["rutas"], "lineas": cat.get("lineas", []), "pruebas": n_pruebas, "pruebas_web": n_web, "salidas": salidas,
     }
     with open(os.path.join(PUB, "datos.js"), "w", encoding="utf-8", newline="\n") as f:
         f.write("// Generado por tools/construir.py a partir de kit/ y catalogo.json. No editar a mano.\n")

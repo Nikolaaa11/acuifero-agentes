@@ -164,7 +164,13 @@ echo "  $n_skills skills en $DESTINO/skills"
 if [ "$HERMES" = 1 ]; then echo "  $n_hermes skills en Hermes Agent ($DIR_HERMES)"; fi
 if [ "$respaldos" -gt 0 ]; then amarillo "  $respaldos elementos anteriores guardados en $DESTINO/acuifero-respaldo"; fi
 
-if ! command -v python3 >/dev/null 2>&1 && ! command -v python >/dev/null 2>&1; then
+PY=""
+if command -v python3 >/dev/null 2>&1; then PY=python3; elif command -v python >/dev/null 2>&1; then PY=python; fi
+if [ -n "$PY" ] && [ -f "$DESTINO/skills/guia-acuifero/scripts/comprobar.py" ]; then
+  if linea="$("$PY" "$DESTINO/skills/guia-acuifero/scripts/comprobar.py" --breve 2>&1 | tail -n 1)"; then verde "  $linea"; else amarillo "  $linea"; fi
+fi
+
+if [ -z "$PY" ]; then
   echo
   amarillo "Aviso: no encontré Python 3. Los agentes funcionan igual, pero los cálculos lo necesitan."
   amarillo "Instálalo gratis desde https://www.python.org/downloads/"

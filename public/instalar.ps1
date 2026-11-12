@@ -183,6 +183,15 @@ if ($respaldos -gt 0) { Escribir "  $respaldos elementos anteriores guardados en
 $py = Get-Command python -ErrorAction SilentlyContinue
 $tienePython = $false
 if ($py) { try { $v = & python --version 2>&1; if ("$v" -match "Python 3") { $tienePython = $true } } catch {} }
+if ($tienePython) {
+    $verificador = Join-Path $dirSkills "guia-acuifero\scripts\comprobar.py"
+    if (Test-Path $verificador) {
+        try {
+            $linea = & python $verificador --breve 2>&1 | Select-Object -Last 1
+            if ($LASTEXITCODE -eq 0) { Escribir "  $linea" "Green" } else { Escribir "  $linea" "Yellow" }
+        } catch { Escribir "  No se pudo correr la comprobacion automatica." "Yellow" }
+    }
+}
 if (-not $tienePython) {
     Escribir ""
     Escribir "Aviso: no encontre Python 3. Los agentes funcionan igual, pero los calculos lo necesitan." "Yellow"

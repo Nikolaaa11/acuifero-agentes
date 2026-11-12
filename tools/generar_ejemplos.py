@@ -100,4 +100,65 @@ for i in range(18):
     filas.append(f"OB-{i + 1:02d},{capa},{obs:.2f},{sim:.2f}")
 escribir("calibracion-modelo", "calibracion.csv", filas)
 
+# 7. Balance ácido-base: doce muestras en tres unidades geoambientales
+filas = ["muestra,grupo,S_total,S_sulfuro,PN,pH_pasta,pH_NAG",
+         "MR-01,andesita,0.12,0.08,62,8.4,7.9", "MR-02,andesita,0.25,0.18,48,8.1,7.2",
+         "MR-03,andesita,0.40,0.30,35,7.9,6.5", "MR-04,andesita,0.60,0.52,28,7.6,5.8",
+         "MR-05,pórfido,1.10,0.95,42,7.2,4.9", "MR-06,pórfido,1.60,1.45,30,6.8,3.9",
+         "MR-07,pórfido,2.40,2.20,18,6.1,3.1", "MR-08,pórfido,0.90,0.70,60,7.5,6.8",
+         "MR-09,brecha,3.80,3.50,6,4.6,2.6", "MR-10,brecha,2.90,2.60,11,5.4,2.9",
+         "MR-11,brecha,5.20,4.90,3,3.9,2.3", "MR-12,brecha,1.30,,25,6.6,4.2"]
+escribir("balance-acido-base", "ensayos-estaticos.csv", filas)
+
+# 8. Entrada de PHREEQC: las mismas aguas del ejemplo de hidroquímica, con temperatura y trazas
+extras = {"PZ-01": (16.5, 28, "0.12", "0.004"), "PZ-02": (18.0, 35, "0.85", "0.012"), "PZ-03": (21.5, 22, "<0.03", "0.050"),
+          "PZ-04": (17.2, 31, "0.30", "0.008"), "PZ-05": (19.0, 40, "1.90", "0.021"), "VT-01": (11.8, 18, "0.05", "<0.001")}
+filas = ["muestra,pH,temp,Ca,Mg,Na,K,HCO3,CO3,Cl,SO4,NO3,SiO2,Fe,As"]
+for nombre, meq, ph in muestras:
+    mg = {k: v * PE[k] for k, v in meq.items()}
+    t, si, fe, ars = extras[nombre]
+    filas.append(f"{nombre},{ph},{t}," + ",".join(f"{mg[k]:.1f}" for k in ("Ca", "Mg", "Na", "K", "HCO3", "CO3", "Cl", "SO4", "NO3")) + f",{si},{fe},{ars}")
+escribir("phreeqc-entrada", "aguas.csv", filas)
+
+# 9. Balance de aguas: tres meses de un depósito de relaves (m3/mes)
+meses = {"2025-01": ([1200000, 5000, 2000], [780000, 95000, 290000, 30000], 10000),
+         "2025-02": ([1150000, 60000, 45000], [760000, 80000, 275000, 30000], 40000),
+         "2025-03": ([1180000, 0, 0], [800000, 90000, 285000, 30000], -30000)}
+filas = ["periodo,componente,tipo,valor"]
+for mes, (ent, sal, alm) in meses.items():
+    for nombre, v in zip(("Agua con la pulpa", "Precipitación directa", "Escorrentía de la cuenca"), ent):
+        filas.append(f"{mes},{nombre},entrada,{v}")
+    for nombre, v in zip(("Recirculación a planta", "Evaporación", "Agua retenida en poros", "Infiltración"), sal):
+        filas.append(f"{mes},{nombre},salida,{v}")
+    filas.append(f"{mes},Variación de la laguna,almacenamiento,{alm}")
+escribir("balance-aguas", "balance-relaves.csv", filas)
+
+# 10. Salares: niveles en aguas de distinta densidad y campaña de evaporación
+escribir("salares", "niveles-densidad.csv", ["punto,nivel,cota_filtro,densidad", "SB-01,2300.50,2280.00,1205", "SB-02,2300.80,2270.00,1180",
+                                             "SB-03,2301.20,2285.00,1100", "SD-04,2302.10,2290.00,1010", "SD-05,2303.00,2295.00,1000",
+                                             "SB-06,2300.40,2260.00,1.22"])
+filas = ["punto,superficie,profundidad,evaporacion"]
+for i, z in enumerate([0.05, 0.10, 0.20, 0.30, 0.50, 0.70, 1.00, 1.30, 1.60, 2.00]):
+    filas.append(f"EV-{i + 1:02d},costra,{z:.2f},{6.0 * math.exp(-2.5 * z) * (1 + ruido(i, 0.06)):.3f}")
+escribir("salares", "evaporacion.csv", filas)
+
+# 11. Umbrales de alerta: un año mensual en cuatro puntos de control
+filas = ["fecha,punto,valor"]
+sulfato = [180, 190, 210, 240, 260, 300, 350, 390, 410, 430, 420, 440]
+for m in range(1, 13):
+    f = f"2025-{m:02d}-15"
+    filas.append(f"{f},PC-01,{2299.60 - 0.11 * (m - 1):.2f}")
+    filas.append(f"{f},PC-02,{2302.10 + ruido(m, 0.05):.2f}")
+    filas.append(f"{f},PC-03,{2305.40 - 0.02 * (m - 1):.2f}")
+    filas.append(f"{f},QC-04,{sulfato[m - 1]}")
+escribir("umbrales-alerta", "series.csv", filas)
+escribir("umbrales-alerta", "umbrales.csv", ["punto,alerta,accion,sentido,unidad", "PC-01,2298.50,2298.00,bajo,m s. n. m.",
+                                             "PC-02,2301.00,2300.50,bajo,m s. n. m.", "QC-04,250,400,sobre,mg/L",
+                                             "PC-05,2296.00,2295.50,bajo,m s. n. m."])
+
+# 12. Anonimizar: cinco pozos con nombre y coordenadas
+escribir("anonimizar-datos", "pozos.csv", ["punto,este,norte,nivel", "Pozo Norte 1,512340.50,7405120.25,2301.42", "Pozo Norte 2,512980.00,7405610.75,2302.10",
+                                           "Pozo Quebrada,511450.25,7403980.00,2298.76", "Pozo Planta,513720.80,7404410.60,2300.05",
+                                           "Pozo Laguna,510890.00,7406250.40,2296.31"])
+
 print("Ejemplos generados en la carpeta ejemplos de cada skill")

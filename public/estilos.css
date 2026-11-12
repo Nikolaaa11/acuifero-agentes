@@ -125,6 +125,15 @@ h3 { font-size: 21px; line-height: 1.2; font-weight: 600; letter-spacing: -.02em
 .pasos-mini li span { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--tinta); color: #fff; font-size: 11px; font-weight: 600; }
 .mini-codigo { margin: auto 0 0; padding: 16px 18px; background: var(--fondo-2); border-radius: 14px; font: 500 14px/1.7 var(--mono); letter-spacing: 0; color: var(--tinta); overflow-x: auto; }
 
+.lineas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr)); gap: 16px; margin-top: 26px; }
+.linea { background: var(--fondo); border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+.linea h4 { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -.02em; }
+.linea p { color: var(--tinta-2); font-size: 15px; line-height: 1.42; }
+.linea .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 12px; }
+.linea .chips button { border: 1px solid var(--linea); background: #fff; border-radius: 980px; padding: 5px 11px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; color: var(--tinta); transition: border-color .2s; }
+.linea .chips button:hover { border-color: var(--tinta); }
+.linea .chips i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
 /* ---------- Filtros y segmentos ---------- */
 .filtros { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px; }
 .ficha-chip, .filtros button {
@@ -322,6 +331,9 @@ legend { font-size: 15px; font-weight: 600; margin-bottom: 10px; padding: 0; }
 .paso details { margin-top: 12px; font-size: 15px; }
 .paso details summary { cursor: pointer; color: var(--azul-enlace); }
 .paso details > *:not(summary) { margin-top: 10px; }
+.esperado { margin: 10px 0 0; padding: 14px 16px; background: var(--fondo-2); border-radius: 12px; border-left: 3px solid var(--verde); font: 500 13px/1.6 var(--mono); letter-spacing: 0; color: var(--tinta); overflow-x: auto; white-space: pre; }
+.paso .donde + .esperado { margin-top: 6px; }
+.paso .donde { margin-top: 8px; }
 .paso .descargas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .paso .descargas a { font-size: 13.5px; border: 1px solid var(--linea); border-radius: 980px; padding: 6px 12px; color: var(--tinta); }
 .paso .descargas a:hover { border-color: var(--tinta); text-decoration: none; }
@@ -397,6 +409,10 @@ tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
 .preguntas details[open] summary::after { rotate: -135deg; translate: 0 -20%; }
 .preguntas details p { color: var(--tinta-2); padding: 0 0 22px; max-width: 40em; }
 .preguntas details .comando { margin: 0 0 12px; }
+.preguntas.ayuda { margin-top: 22px; }
+.preguntas.ayuda summary { font-size: 18px; padding: 18px 44px 18px 0; }
+.preguntas.ayuda details > p { padding-bottom: 12px; }
+.preguntas.ayuda details > p:last-child, .preguntas.ayuda details > .comando:last-child { margin-bottom: 20px; }
 .preguntas details .etiqueta { font-size: 13px; color: var(--tinta-3); margin: 0 0 6px; padding: 0; }
 
 /* ---------- Pie ---------- */

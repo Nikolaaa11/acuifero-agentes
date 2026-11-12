@@ -1,0 +1,13 @@
+muestra,grupo,S_total,S_sulfuro,PN,pH_pasta,pH_NAG
+MR-01,andesita,0.12,0.08,62,8.4,7.9
+MR-02,andesita,0.25,0.18,48,8.1,7.2
+MR-03,andesita,0.40,0.30,35,7.9,6.5
+MR-04,andesita,0.60,0.52,28,7.6,5.8
+MR-05,pórfido,1.10,0.95,42,7.2,4.9
+MR-06,pórfido,1.60,1.45,30,6.8,3.9
+MR-07,pórfido,2.40,2.20,18,6.1,3.1
+MR-08,pórfido,0.90,0.70,60,7.5,6.8
+MR-09,brecha,3.80,3.50,6,4.6,2.6
+MR-10,brecha,2.90,2.60,11,5.4,2.9
+MR-11,brecha,5.20,4.90,3,3.9,2.3
+MR-12,brecha,1.30,,25,6.6,4.2

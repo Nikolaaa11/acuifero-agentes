@@ -143,7 +143,24 @@
     return { gradiente: g, azimut: az, rumbo: rumbo(az), alineados: false, a: a, b: b };
   }
 
+  /** Balance ácido-base. S en % (azufre como sulfuro), PN en kg CaCO3/t. */
+  function balanceAcidoBase(p) {
+    var rg = p.razonGen || 1, rn = p.razonNo || 2, lim = p.pnnLim === undefined || isNaN(p.pnnLim) ? 20 : p.pnnLim;
+    var pa = 31.25 * p.S, pnn = p.PN - pa, razon = pa > 0 ? p.PN / pa : Infinity;
+    var porRazon = razon < rg ? "generador" : razon > rn ? "no generador" : "incierto";
+    var porPnn = pnn < -lim ? "generador" : pnn > lim ? "no generador" : "incierto";
+    return { PA: pa, PNN: pnn, razon: razon, porRazon: porRazon, porPnn: porPnn, clase: porRazon === porPnn ? porRazon : "incierto" };
+  }
+
+  /** Carga equivalente de agua dulce. Cotas en m; densidad en kg/m3 o en g/cm3. */
+  function cargaEquivalente(p) {
+    var rho = p.rho < 5 ? p.rho * 1000 : p.rho, rd = p.rhoDulce || 1000;
+    var hf = p.z + (rho / rd) * (p.h - p.z);
+    return { carga: hf, diferencia: hf - p.h, densidad: rho };
+  }
+
   return {
+    balanceAcidoBase: balanceAcidoBase, cargaEquivalente: cargaEquivalente,
     wTheis: wTheis, UNIDADES: UNIDADES, convertir: convertir, darcy: darcy, theis: theis, curvaTheis: curvaTheis,
     cooperJacob: cooperJacob, balanceIonico: balanceIonico, tresPozos: tresPozos, rumbo: rumbo, PESO_EQ: PESO_EQ
   };

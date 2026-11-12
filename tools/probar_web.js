@@ -54,5 +54,21 @@ const g2 = C.tresPozos({ x: 0, y: 0, h: 100 }, { x: 1000, y: 0, h: 100 }, { x: 0
 ok("flujo hacia el sur con gradiente 0,01", cerca(g2.gradiente, 0.01, 1e-12) && Math.abs(g2.azimut - 180) < 1e-9 && g2.rumbo === "S", g2.azimut);
 ok("pozos alineados se detectan", C.tresPozos({ x: 0, y: 0, h: 1 }, { x: 1, y: 1, h: 2 }, { x: 2, y: 2, h: 3 }).alineados === true);
 
+console.log("Balance ácido-base");
+const a1 = C.balanceAcidoBase({ S: 2.2, PN: 18 });
+ok("MR-07: PA 68,75, PNN -50,75, generador", cerca(a1.PA, 68.75, 1e-12) && cerca(a1.PNN, -50.75, 1e-12) && a1.clase === "generador", a1.PNN);
+const a2 = C.balanceAcidoBase({ S: 1.45, PN: 30 });
+ok("MR-06: criterios distintos dan incierto", a2.porRazon === "generador" && a2.porPnn === "incierto" && a2.clase === "incierto", a2.razon.toFixed(3));
+const a3 = C.balanceAcidoBase({ S: 0.08, PN: 62 });
+ok("MR-01: no generador", a3.clase === "no generador" && cerca(a3.razon, 24.8, 1e-9));
+ok("sin azufre no divide por cero", C.balanceAcidoBase({ S: 0, PN: 30 }).razon === Infinity);
+ok("cortes configurables", C.balanceAcidoBase({ S: 0.52, PN: 28, razonNo: 1.5, pnnLim: 10 }).clase === "no generador");
+
+console.log("Carga equivalente");
+const c1 = C.cargaEquivalente({ h: 2300.5, z: 2280, rho: 1205 });
+ok("SB-01 = 2304,7025 m s. n. m.", cerca(c1.carga, 2304.7025, 1e-12) && cerca(c1.diferencia, 4.2025, 1e-9), c1.carga);
+ok("densidad en g/cm3 da lo mismo", cerca(C.cargaEquivalente({ h: 2300.5, z: 2280, rho: 1.205 }).carga, 2304.7025, 1e-12));
+ok("agua dulce no cambia", cerca(C.cargaEquivalente({ h: 2303, z: 2295, rho: 1000 }).carga, 2303, 1e-12));
+
 console.log(fallas ? `\n${fallas} de ${total} pruebas fallaron.` : `\nTodas las pruebas pasaron (${total}).`);
 process.exit(fallas ? 1 : 0);

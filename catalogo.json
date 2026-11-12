@@ -1,15 +1,48 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repo": "Nikolaaa11/acuifero-agentes",
   "sitio": "https://acuifero-agentes.vercel.app",
   "etapas": [
-    { "id": "propuesta", "nombre": "Propuesta", "desc": "Alcance, horas y cronograma" },
-    { "id": "antecedentes", "nombre": "Antecedentes", "desc": "Lo que ya se sabe y lo que exige la norma" },
-    { "id": "terreno", "nombre": "Terreno", "desc": "Campañas, muestreo y datos" },
-    { "id": "analisis", "nombre": "Análisis", "desc": "Ensayos, química, series y mapas" },
-    { "id": "modelo", "nombre": "Modelos", "desc": "Conceptual y numérico" },
-    { "id": "informe", "nombre": "Informe", "desc": "Redacción y trazabilidad" },
-    { "id": "revision", "nombre": "Revisión", "desc": "Control de calidad antes de entregar" }
+    {
+      "id": "propuesta",
+      "nombre": "Propuesta",
+      "desc": "Alcance, horas y cronograma"
+    },
+    {
+      "id": "antecedentes",
+      "nombre": "Antecedentes",
+      "desc": "Lo que ya se sabe y lo que exige la norma"
+    },
+    {
+      "id": "terreno",
+      "nombre": "Terreno",
+      "desc": "Campañas, muestreo y datos"
+    },
+    {
+      "id": "analisis",
+      "nombre": "Análisis",
+      "desc": "Ensayos, química, series, mapas y residuos"
+    },
+    {
+      "id": "modelo",
+      "nombre": "Modelos",
+      "desc": "Conceptual, numérico, geoquímico y de faena"
+    },
+    {
+      "id": "informe",
+      "nombre": "Informe",
+      "desc": "Redacción, trazabilidad y tramitación"
+    },
+    {
+      "id": "revision",
+      "nombre": "Revisión",
+      "desc": "Control de calidad antes de entregar"
+    },
+    {
+      "id": "seguimiento",
+      "nombre": "Seguimiento",
+      "desc": "Alerta temprana, compromisos y cierre"
+    }
   ],
   "agentes": {
     "hidro-propuestas": {
@@ -20,7 +53,9 @@
       "entrega": "Propuesta con metodología, tabla de horas, cronograma, supuestos y matriz de cumplimiento.",
       "pedido": "Usa hidro-propuestas con las bases que están en 00-antecedentes/bases.pdf. Arma el alcance por actividad, la tabla de horas por perfil y un cronograma de 16 semanas. No inventes tarifas.",
       "usa": [],
-      "apps": ["word"]
+      "apps": [
+        "word"
+      ]
     },
     "hidro-bibliografia": {
       "titulo": "Antecedentes",
@@ -30,7 +65,9 @@
       "entrega": "Tabla de fuentes, síntesis por tema, contradicciones entre fuentes y vacíos de información.",
       "pedido": "Usa hidro-bibliografia para recopilar antecedentes hidrogeológicos públicos de la cuenca del río Copiapó: unidades acuíferas, parámetros hidráulicos, piezometría y recarga. Cada dato con su fuente y página.",
       "usa": [],
-      "apps": ["web"]
+      "apps": [
+        "web"
+      ]
     },
     "hidro-normativa": {
       "titulo": "Normativa",
@@ -40,7 +77,9 @@
       "entrega": "Tabla de normas con enlace y fecha de consulta, requisitos extraídos y lista de chequeo.",
       "pedido": "Usa hidro-normativa: ¿qué guía vigente del servicio de evaluación ambiental aplica a un modelo numérico de aguas subterráneas en Chile? Dame el nombre oficial, el año, el enlace y los contenidos mínimos que exige.",
       "usa": [],
-      "apps": ["web"]
+      "apps": [
+        "web"
+      ]
     },
     "hidro-terreno": {
       "titulo": "Terreno",
@@ -50,7 +89,9 @@
       "entrega": "Plan de campaña, protocolo paso a paso, control de calidad y planillas listas para llenar.",
       "pedido": "Usa hidro-terreno para planificar un muestreo de 12 pozos en 3 días: niveles, parámetros de terreno, iones mayores y metales disueltos. Incluye duplicados, blancos, cadena de custodia y lista de materiales.",
       "usa": [],
-      "apps": ["excel"]
+      "apps": [
+        "excel"
+      ]
     },
     "hidro-ensayos": {
       "titulo": "Ensayos de bombeo",
@@ -59,8 +100,13 @@
       "necesita": "Planilla de tiempo y descenso, caudal, distancia al pozo y espesor saturado.",
       "entrega": "T, K y S por método, validez de los supuestos y parámetros recomendados con su rango.",
       "pedido": "Usa hidro-ensayos con 02-datos-limpios/ensayo-PZ03.csv. Caudal 12 L/s, pozo de observación a 35 m, espesor saturado 40 m. Compara Theis y Cooper-Jacob y dime qué valor recomiendas y por qué.",
-      "usa": ["ensayo-bombeo", "unidades-hidro"],
-      "apps": ["python"]
+      "usa": [
+        "ensayo-bombeo",
+        "unidades-hidro"
+      ],
+      "apps": [
+        "python"
+      ]
     },
     "hidro-quimica": {
       "titulo": "Hidroquímica",
@@ -69,8 +115,13 @@
       "necesita": "Tabla de laboratorio con iones mayores en mg/L.",
       "entrega": "Control de calidad por muestra, facies, diagrama de Piper, procesos interpretados y excedencias.",
       "pedido": "Usa hidro-quimica con 02-datos-limpios/laboratorio-marzo.csv. Haz el balance iónico, dibuja el Piper y dime qué muestras no se pueden interpretar y por qué.",
-      "usa": ["balance-ionico"],
-      "apps": ["python", "phreeqc"]
+      "usa": [
+        "balance-ionico"
+      ],
+      "apps": [
+        "python",
+        "phreeqc"
+      ]
     },
     "hidro-monitoreo": {
       "titulo": "Monitoreo",
@@ -79,8 +130,13 @@
       "necesita": "Series por punto con fecha y valor, y los umbrales comprometidos.",
       "entrega": "Series limpias, tendencias, excedencias, hidrogramas y recomendaciones para la red.",
       "pedido": "Usa hidro-monitoreo con 02-datos-limpios/niveles-2021-2025.csv. Calcula tendencias por pozo, marca valores anómalos y prepara el resumen del informe semestral.",
-      "usa": ["tendencia-niveles"],
-      "apps": ["python", "excel"]
+      "usa": [
+        "tendencia-niveles"
+      ],
+      "apps": [
+        "python",
+        "excel"
+      ]
     },
     "hidro-sig": {
       "titulo": "SIG y mapas",
@@ -89,18 +145,61 @@
       "necesita": "Capas o tablas con coordenadas y el sistema de coordenadas del proyecto.",
       "entrega": "Capas resultantes, el script usado y notas de sistemas de coordenadas y limitaciones.",
       "pedido": "Usa hidro-sig con 02-datos-limpios/niveles-campana.csv (WGS 84, UTM 19 sur). Genera curvas piezométricas cada 5 m para QGIS y dime el gradiente y la dirección de flujo.",
-      "usa": ["mapa-piezometrico"],
-      "apps": ["qgis", "python"]
+      "usa": [
+        "mapa-piezometrico"
+      ],
+      "apps": [
+        "qgis",
+        "python"
+      ]
+    },
+    "hidro-salares": {
+      "titulo": "Salares",
+      "etapa": "analisis",
+      "resumen": "Trabaja salmueras, densidad variable, evaporación, lagunas y vegas en cuencas cerradas.",
+      "necesita": "Niveles con densidad y cota del tramo captado, mediciones de evaporación y química.",
+      "entrega": "Cargas equivalentes, curvas de evaporación, interfaz salina, balance de la cuenca y vacíos.",
+      "pedido": "Usa hidro-salares con 02-datos-limpios/niveles-densidad.csv y 02-datos-limpios/evaporacion.csv. Calcula las cargas equivalentes de agua dulce, ajusta la curva de evaporación y dime qué falta medir.",
+      "usa": [
+        "salares",
+        "balance-aguas",
+        "balance-ionico"
+      ],
+      "apps": [
+        "python",
+        "qgis"
+      ]
+    },
+    "geo-drenaje": {
+      "titulo": "Drenaje ácido",
+      "etapa": "analisis",
+      "resumen": "Dice qué material puede generar acidez o liberar metales, cuándo, y qué manejo lo evita.",
+      "necesita": "Ensayos estáticos y cinéticos, mineralogía y el tonelaje de cada unidad de material.",
+      "entrega": "Clasificación por muestra y por unidad, tasas, criterios citados y plan de gestión.",
+      "pedido": "Usa geo-drenaje con 02-datos-limpios/ensayos-estaticos.csv. Clasifica cada unidad de material, dime cuáles necesitan ensayo cinético y qué criterio usaste.",
+      "usa": [
+        "balance-acido-base",
+        "balance-ionico"
+      ],
+      "apps": [
+        "python",
+        "excel"
+      ]
     },
     "geo-ambiental": {
-      "titulo": "Geología ambiental",
+      "titulo": "Sitios y pasivos",
       "etapa": "analisis",
-      "resumen": "Conecta suelos, residuos mineros y geoquímica con el riesgo y las medidas de cierre.",
-      "necesita": "Resultados de suelos, residuos o ensayos geoquímicos y la historia del sitio.",
-      "entrega": "Modelo conceptual del sitio, clasificación de materiales, comparación con criterios citados y medidas.",
-      "pedido": "Usa geo-ambiental con los ensayos estáticos de 02-datos-limpios/aba-botadero.csv. Clasifica el material por potencial de generación de ácido, indica el criterio que usas y qué ensayos cinéticos faltan.",
-      "usa": ["balance-ionico"],
-      "apps": ["python", "phreeqc"]
+      "resumen": "Caracteriza sitios y suelos con posible contaminación y conecta fuentes, rutas y receptores.",
+      "necesita": "Resultados de suelos y aguas, historia de uso del sitio y los valores de referencia que aplican.",
+      "entrega": "Modelo conceptual del sitio, valores de fondo, comparación con criterios citados, rutas de exposición y medidas.",
+      "pedido": "Usa geo-ambiental con 02-datos-limpios/suelos-campana1.csv. Arma el modelo conceptual fuente, ruta y receptor, separa fondo natural de aporte del sitio y dime qué rutas están completas.",
+      "usa": [
+        "balance-ionico"
+      ],
+      "apps": [
+        "python",
+        "qgis"
+      ]
     },
     "hidro-conceptual": {
       "titulo": "Modelo conceptual",
@@ -109,7 +208,10 @@
       "necesita": "Geología, sondajes, niveles, ensayos, química y clima del área.",
       "entrega": "Modelo conceptual con unidades, parámetros, flujo, balance, incertidumbres y vacíos.",
       "pedido": "Usa hidro-conceptual con todo lo que hay en 03-analisis/ y 00-antecedentes/. Arma el modelo conceptual, la tabla de parámetros con su fuente y la lista de vacíos de información ordenada por importancia.",
-      "usa": ["mapa-piezometrico", "unidades-hidro"],
+      "usa": [
+        "mapa-piezometrico",
+        "unidades-hidro"
+      ],
       "apps": []
     },
     "hidro-modelo": {
@@ -119,8 +221,46 @@
       "necesita": "Modelo conceptual, datos de calibración y los archivos o reportes del modelo.",
       "entrega": "Diseño, estadísticos de calibración, balance, sensibilidad, escenarios y limitaciones.",
       "pedido": "Usa hidro-modelo con 04-modelos/calibracion.csv (observado y simulado por capa). Calcula los estadísticos, dime dónde calibra peor y qué revisarías antes de usarlo para predicciones.",
-      "usa": ["calibracion-modelo"],
-      "apps": ["modflow", "python"]
+      "usa": [
+        "calibracion-modelo"
+      ],
+      "apps": [
+        "modflow",
+        "python"
+      ]
+    },
+    "hidro-mineria": {
+      "titulo": "Agua en minería",
+      "etapa": "modelo",
+      "resumen": "Conecta el acuífero con la operación: cuánta agua entra y sale de cada componente, y por dónde.",
+      "necesita": "Esquema del componente, caudales medidos o estimados y datos de instrumentación.",
+      "entrega": "Esquema de flujos, balance por período con su cierre, ingresos estimados y medidas de manejo.",
+      "pedido": "Usa hidro-mineria con 02-datos-limpios/balance-relaves.csv, en m3/mes. Cierra el balance por mes, dime qué término explica el descuadre y qué medirías para acotarlo.",
+      "usa": [
+        "balance-aguas",
+        "unidades-hidro"
+      ],
+      "apps": [
+        "python",
+        "excel",
+        "modflow"
+      ]
+    },
+    "geo-reactivo": {
+      "titulo": "Modelo geoquímico",
+      "etapa": "modelo",
+      "resumen": "Prepara y revisa modelos de especiación, mezcla y transporte reactivo para predecir calidad de agua.",
+      "necesita": "Análisis con control de calidad, mineralogía y el modelo conceptual del sistema.",
+      "entrega": "Archivos de entrada comentados, base de datos justificada, resultados por escenario y límites.",
+      "pedido": "Usa geo-reactivo con 02-datos-limpios/aguas.csv. Genera la entrada de PHREEQC para especiación e índices de saturación, dime qué base de datos conviene y qué supuestos dejaste.",
+      "usa": [
+        "phreeqc-entrada",
+        "balance-ionico"
+      ],
+      "apps": [
+        "phreeqc",
+        "python"
+      ]
     },
     "hidro-informes": {
       "titulo": "Informes",
@@ -129,8 +269,28 @@
       "necesita": "Resultados de las etapas anteriores y el formato exigido.",
       "entrega": "Informe en Markdown o Word, tabla de trazabilidad de cifras y lista de pendientes.",
       "pedido": "Usa hidro-informes para redactar el informe del ensayo de bombeo del PZ-03 con los resultados de 03-analisis/. Sigue la plantilla, arma la tabla de trazabilidad y marca lo pendiente.",
-      "usa": ["informe-hidrogeologico", "unidades-hidro"],
-      "apps": ["word"]
+      "usa": [
+        "informe-hidrogeologico",
+        "unidades-hidro"
+      ],
+      "apps": [
+        "word"
+      ]
+    },
+    "hidro-seia": {
+      "titulo": "Tramitación",
+      "etapa": "informe",
+      "resumen": "Arma respuestas a la autoridad que se sostienen en un dato, un anexo y una frase coherente.",
+      "necesita": "Las observaciones de la autoridad, el capítulo y sus anexos, y los compromisos vigentes.",
+      "entrega": "Matriz de observaciones con respuesta y respaldo, lista de compromisos y tabla de coherencia.",
+      "pedido": "Usa hidro-seia con las observaciones de 00-antecedentes/observaciones.pdf. Arma la matriz de observaciones de aguas subterráneas con respuesta propuesta, respaldo y anexo, y lista los compromisos que quedarían.",
+      "usa": [
+        "informe-hidrogeologico"
+      ],
+      "apps": [
+        "word",
+        "web"
+      ]
     },
     "hidro-revisor": {
       "titulo": "Revisión",
@@ -139,15 +299,55 @@
       "necesita": "El documento o la planilla, y los datos de origen.",
       "entrega": "Tabla de hallazgos con severidad, evidencia y corrección sugerida, más un veredicto.",
       "pedido": "Usa hidro-revisor con 06-informes/informe-ensayo-PZ03-vA.md. Recalcula las cifras clave con los datos de 02-datos-limpios/ y clasifica los hallazgos en críticos, mayores y menores.",
-      "usa": ["ensayo-bombeo", "balance-ionico", "calibracion-modelo", "tendencia-niveles", "unidades-hidro"],
+      "usa": [
+        "ensayo-bombeo",
+        "balance-ionico",
+        "calibracion-modelo",
+        "tendencia-niveles",
+        "balance-aguas",
+        "balance-acido-base",
+        "unidades-hidro"
+      ],
       "apps": []
+    },
+    "hidro-alerta": {
+      "titulo": "Alerta temprana",
+      "etapa": "seguimiento",
+      "resumen": "Diseña planes de alerta temprana y evalúa cada campaña contra sus umbrales.",
+      "necesita": "El plan aprobado con sus umbrales y las series de los puntos de control.",
+      "entrega": "Estado de cada punto, tendencias, causas probables y medidas que corresponden según el plan.",
+      "pedido": "Usa hidro-alerta con 02-datos-limpios/series.csv y 02-datos-limpios/umbrales.csv. Dime el estado de cada punto de control, cuáles vienen bajando y qué medida del plan corresponde.",
+      "usa": [
+        "umbrales-alerta",
+        "tendencia-niveles"
+      ],
+      "apps": [
+        "python",
+        "excel"
+      ]
+    },
+    "hidro-cierre": {
+      "titulo": "Cierre de faenas",
+      "etapa": "seguimiento",
+      "resumen": "Evalúa la estabilidad hidrológica y química de cada componente y compara medidas de cierre.",
+      "necesita": "Condición final del componente, balance de aguas, caracterización geoquímica y el plan vigente.",
+      "entrega": "Estabilidad hidrológica y química, rutas y receptores, matriz de alternativas y monitoreo de poscierre.",
+      "pedido": "Usa hidro-cierre para el botadero norte con lo que hay en 03-analisis/. Compara tres alternativas de cobertura y manejo de aguas, sin inventar costos, y dime qué dato falta para elegir.",
+      "usa": [
+        "balance-aguas",
+        "balance-acido-base"
+      ],
+      "apps": [
+        "word",
+        "web"
+      ]
     }
   },
   "skills": {
     "guia-acuifero": {
       "titulo": "Guía del kit",
       "tipo": "guia",
-      "resumen": "Dice qué agente o skill usar para cada tarea y en qué orden.",
+      "resumen": "Dice qué agente o skill usar para cada tarea y comprueba que la instalación funcione.",
       "pedido": "¿Qué agente del kit me sirve para revisar un informe de monitoreo, y qué le tengo que pasar?"
     },
     "inicio-proyecto": {
@@ -155,6 +355,13 @@
       "tipo": "guia",
       "resumen": "Ordena la carpeta y escribe el archivo de contexto que leen todos los agentes.",
       "pedido": "Usa inicio-proyecto en esta carpeta. Es una línea de base hidrogeológica en la Región de Atacama, con coordenadas WGS 84 UTM 19 sur."
+    },
+    "anonimizar-datos": {
+      "titulo": "Anonimizar datos",
+      "tipo": "calculo",
+      "resumen": "Cambia nombres por códigos y traslada coordenadas; la clave queda en tu equipo.",
+      "comando": "python anonimizar.py niveles.csv --nombres punto --x este --y norte --clave clave.json",
+      "pedido": "Con la skill anonimizar-datos anonimiza pozos.csv (columna punto y coordenadas este y norte) y guarda la clave en clave-proyecto.json, sin mostrarme su contenido."
     },
     "ensayo-bombeo": {
       "titulo": "Ensayo de bombeo",
@@ -187,12 +394,49 @@
       "pedido": "Con la skill mapa-piezometrico genera curvas cada 5 m desde niveles.csv y dime hacia dónde va el flujo.",
       "calculadora": "gradiente"
     },
+    "salares": {
+      "titulo": "Salares y salmueras",
+      "tipo": "calculo",
+      "resumen": "Carga equivalente de agua dulce y curva de evaporación contra profundidad.",
+      "comando": "python salares.py carga niveles.csv",
+      "pedido": "Con la skill salares calcula la carga equivalente de agua dulce de niveles-densidad.csv.",
+      "calculadora": "densidad"
+    },
+    "balance-acido-base": {
+      "titulo": "Balance ácido-base",
+      "tipo": "calculo",
+      "resumen": "Clasifica residuos mineros como generadores de ácido, inciertos o no generadores.",
+      "comando": "python aba.py ensayos.csv",
+      "pedido": "Con la skill balance-acido-base clasifica las muestras de ensayos-estaticos.csv y resume por unidad.",
+      "calculadora": "aba"
+    },
     "calibracion-modelo": {
       "titulo": "Calibración",
       "tipo": "calculo",
       "resumen": "Estadísticos de observado contra simulado, en total y por capa.",
       "comando": "python calibracion.py calibracion.csv --umbral 10",
       "pedido": "Con la skill calibracion-modelo calcula los estadísticos de calibracion.csv y dime qué capa calibra peor."
+    },
+    "balance-aguas": {
+      "titulo": "Balance de aguas",
+      "tipo": "calculo",
+      "resumen": "Cierra el balance por período y muestra qué término pesa más.",
+      "comando": "python balance_aguas.py balance.csv --unidad \"m3/mes\"",
+      "pedido": "Con la skill balance-aguas cierra el balance de balance-relaves.csv por mes y dime cuál no cierra."
+    },
+    "phreeqc-entrada": {
+      "titulo": "Entrada de PHREEQC",
+      "tipo": "calculo",
+      "resumen": "Escribe el archivo de PHREEQC con un bloque por muestra e índices de saturación.",
+      "comando": "python phreeqc_entrada.py muestras.csv --salida muestras.pqi",
+      "pedido": "Con la skill phreeqc-entrada genera el archivo de PHREEQC de aguas.csv y dime qué elementos quedaron fuera de la base de datos."
+    },
+    "umbrales-alerta": {
+      "titulo": "Umbrales de alerta",
+      "tipo": "calculo",
+      "resumen": "Estado de cada punto de control frente a sus umbrales de alerta y de acción.",
+      "comando": "python umbrales.py series.csv umbrales.csv --consecutivas 2",
+      "pedido": "Con la skill umbrales-alerta compara series.csv con umbrales.csv y dime qué puntos están en alerta o en acción."
     },
     "unidades-hidro": {
       "titulo": "Unidades",
@@ -210,28 +454,276 @@
     }
   },
   "apps": [
-    { "id": "python", "nombre": "Python", "desc": "Corre los scripts de cálculo. Viene en Mac y Linux; en Windows se instala gratis desde python.org." },
-    { "id": "qgis", "nombre": "QGIS", "desc": "Abre las curvas y grillas que generan las skills." },
-    { "id": "phreeqc", "nombre": "PHREEQC", "desc": "Modelación geoquímica. Los agentes preparan los archivos de entrada." },
-    { "id": "modflow", "nombre": "MODFLOW 6 y FloPy", "desc": "Modelos de flujo construidos con scripts reproducibles." },
-    { "id": "excel", "nombre": "Excel y CSV", "desc": "Las planillas se guardan como CSV para que los scripts las lean." },
-    { "id": "word", "nombre": "Word", "desc": "Formato final de informes y propuestas." },
-    { "id": "web", "nombre": "Fuentes oficiales", "desc": "Leyes, guías y estudios públicos, abiertos en su sitio de origen." }
+    {
+      "id": "python",
+      "nombre": "Python",
+      "desc": "Corre los scripts de cálculo. Viene en Mac y Linux; en Windows se instala gratis desde python.org."
+    },
+    {
+      "id": "qgis",
+      "nombre": "QGIS",
+      "desc": "Abre las curvas y grillas que generan las skills."
+    },
+    {
+      "id": "phreeqc",
+      "nombre": "PHREEQC",
+      "desc": "Modelación geoquímica. Los agentes preparan los archivos de entrada."
+    },
+    {
+      "id": "modflow",
+      "nombre": "MODFLOW 6 y FloPy",
+      "desc": "Modelos de flujo construidos con scripts reproducibles."
+    },
+    {
+      "id": "excel",
+      "nombre": "Excel y CSV",
+      "desc": "Las planillas se guardan como CSV para que los scripts las lean."
+    },
+    {
+      "id": "word",
+      "nombre": "Word",
+      "desc": "Formato final de informes y propuestas."
+    },
+    {
+      "id": "web",
+      "nombre": "Fuentes oficiales",
+      "desc": "Leyes, guías y estudios públicos, abiertos en su sitio de origen."
+    }
   ],
   "calculadoras": [
-    { "id": "unidades", "nombre": "Unidades", "desc": "Conductividad, caudal y transmisividad" },
-    { "id": "darcy", "nombre": "Darcy", "desc": "Caudal, velocidad y tiempo de viaje" },
-    { "id": "theis", "nombre": "Theis", "desc": "Descenso a una distancia y un tiempo" },
-    { "id": "jacob", "nombre": "Cooper-Jacob", "desc": "T y S desde la recta del ensayo" },
-    { "id": "ionico", "nombre": "Balance iónico", "desc": "Error, tipo de agua y diagrama de Stiff" },
-    { "id": "gradiente", "nombre": "Tres pozos", "desc": "Gradiente y dirección de flujo" }
+    {
+      "id": "unidades",
+      "nombre": "Unidades",
+      "desc": "Conductividad, caudal y transmisividad"
+    },
+    {
+      "id": "darcy",
+      "nombre": "Darcy",
+      "desc": "Caudal, velocidad y tiempo de viaje"
+    },
+    {
+      "id": "theis",
+      "nombre": "Theis",
+      "desc": "Descenso a una distancia y un tiempo"
+    },
+    {
+      "id": "jacob",
+      "nombre": "Cooper-Jacob",
+      "desc": "T y S desde la recta del ensayo"
+    },
+    {
+      "id": "ionico",
+      "nombre": "Balance iónico",
+      "desc": "Error, tipo de agua y diagrama de Stiff"
+    },
+    {
+      "id": "gradiente",
+      "nombre": "Tres pozos",
+      "desc": "Gradiente y dirección de flujo"
+    },
+    {
+      "id": "aba",
+      "nombre": "Ácido-base",
+      "desc": "Potencial de acidez, potencial neto y clase del material"
+    },
+    {
+      "id": "densidad",
+      "nombre": "Carga equivalente",
+      "desc": "Nivel en salmuera llevado a agua dulce"
+    }
   ],
   "rutas": [
-    { "id": "ensayo", "nombre": "Interpretar un ensayo de bombeo", "pasos": ["hidro-ensayos", "ensayo-bombeo", "unidades-hidro", "hidro-informes", "informe-hidrogeologico", "hidro-revisor"] },
-    { "id": "linea-base", "nombre": "Línea de base hidrogeológica", "pasos": ["inicio-proyecto", "hidro-bibliografia", "hidro-normativa", "hidro-terreno", "hidro-quimica", "hidro-sig", "hidro-conceptual", "hidro-informes", "hidro-revisor"] },
-    { "id": "monitoreo", "nombre": "Informe de monitoreo", "pasos": ["hidro-monitoreo", "tendencia-niveles", "hidro-quimica", "balance-ionico", "hidro-informes", "hidro-revisor"] },
-    { "id": "modelo", "nombre": "Revisar un modelo numérico", "pasos": ["hidro-conceptual", "hidro-modelo", "calibracion-modelo", "hidro-normativa", "hidro-revisor"] },
-    { "id": "cierre", "nombre": "Estabilidad química de un botadero", "pasos": ["hidro-bibliografia", "hidro-terreno", "geo-ambiental", "hidro-quimica", "balance-ionico", "hidro-informes", "hidro-revisor"] },
-    { "id": "licitacion", "nombre": "Responder una licitación", "pasos": ["hidro-propuestas", "hidro-bibliografia", "hidro-normativa"] }
+    {
+      "id": "ensayo",
+      "nombre": "Interpretar un ensayo de bombeo",
+      "pasos": [
+        "hidro-ensayos",
+        "ensayo-bombeo",
+        "unidades-hidro",
+        "hidro-informes",
+        "informe-hidrogeologico",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "linea-base",
+      "nombre": "Línea de base hidrogeológica",
+      "pasos": [
+        "inicio-proyecto",
+        "hidro-bibliografia",
+        "hidro-normativa",
+        "hidro-terreno",
+        "hidro-quimica",
+        "hidro-sig",
+        "hidro-conceptual",
+        "hidro-informes",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "alerta",
+      "nombre": "Informe de un plan de alerta temprana",
+      "pasos": [
+        "hidro-monitoreo",
+        "tendencia-niveles",
+        "hidro-alerta",
+        "umbrales-alerta",
+        "hidro-informes",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "salar",
+      "nombre": "Campaña en un salar",
+      "pasos": [
+        "hidro-terreno",
+        "hidro-salares",
+        "salares",
+        "hidro-quimica",
+        "balance-ionico",
+        "hidro-informes"
+      ]
+    },
+    {
+      "id": "drenaje",
+      "nombre": "Drenaje ácido de un botadero",
+      "pasos": [
+        "geo-drenaje",
+        "balance-acido-base",
+        "hidro-quimica",
+        "geo-reactivo",
+        "phreeqc-entrada",
+        "hidro-cierre",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "relaves",
+      "nombre": "Balance de aguas de un depósito de relaves",
+      "pasos": [
+        "hidro-mineria",
+        "balance-aguas",
+        "hidro-monitoreo",
+        "hidro-informes",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "adenda",
+      "nombre": "Responder observaciones de la autoridad",
+      "pasos": [
+        "hidro-seia",
+        "hidro-normativa",
+        "hidro-modelo",
+        "hidro-informes",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "modelo",
+      "nombre": "Revisar un modelo numérico",
+      "pasos": [
+        "hidro-conceptual",
+        "hidro-modelo",
+        "calibracion-modelo",
+        "hidro-normativa",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "confidencial",
+      "nombre": "Trabajar con datos de un cliente",
+      "pasos": [
+        "inicio-proyecto",
+        "anonimizar-datos",
+        "hidro-monitoreo",
+        "hidro-revisor"
+      ]
+    },
+    {
+      "id": "licitacion",
+      "nombre": "Responder una licitación",
+      "pasos": [
+        "hidro-propuestas",
+        "hidro-bibliografia",
+        "hidro-normativa"
+      ]
+    }
+  ],
+  "lineas": [
+    {
+      "nombre": "Recursos hídricos",
+      "desc": "Exploración, modelos conceptuales y numéricos, monitoreo, balance hídrico y recarga.",
+      "agentes": [
+        "hidro-conceptual",
+        "hidro-modelo",
+        "hidro-ensayos",
+        "hidro-monitoreo",
+        "hidro-sig"
+      ]
+    },
+    {
+      "nombre": "Agua y componentes mineros",
+      "desc": "Desaguado de rajos y labores, relaves, botaderos y pilas; balance de aguas y manejo integral.",
+      "agentes": [
+        "hidro-mineria",
+        "hidro-modelo",
+        "hidro-ensayos"
+      ]
+    },
+    {
+      "nombre": "Drenaje ácido y lixiviación de metales",
+      "desc": "Caracterización, monitoreo geoquímico y predicción de la calidad de los efluentes.",
+      "agentes": [
+        "geo-drenaje",
+        "geo-reactivo",
+        "hidro-quimica"
+      ]
+    },
+    {
+      "nombre": "Salares y sistemas altoandinos",
+      "desc": "Salmueras, densidad variable, evaporación, lagunas, vegas y bofedales.",
+      "agentes": [
+        "hidro-salares",
+        "hidro-terreno",
+        "hidro-quimica"
+      ]
+    },
+    {
+      "nombre": "Seguimiento y alerta temprana",
+      "desc": "Puntos de control, umbrales, informes periódicos y medidas asociadas.",
+      "agentes": [
+        "hidro-alerta",
+        "hidro-monitoreo"
+      ]
+    },
+    {
+      "nombre": "Sitios contaminados y pasivos",
+      "desc": "Modelo conceptual del sitio, valores de fondo, riesgo y remediación.",
+      "agentes": [
+        "geo-ambiental",
+        "hidro-quimica",
+        "hidro-terreno"
+      ]
+    },
+    {
+      "nombre": "Cierre de faenas",
+      "desc": "Estabilidad hidrológica y química, coberturas, tratamiento y poscierre.",
+      "agentes": [
+        "hidro-cierre",
+        "geo-drenaje",
+        "hidro-mineria"
+      ]
+    },
+    {
+      "nombre": "Permisos y tramitación",
+      "desc": "Línea de base, capítulos de evaluación ambiental y respuestas a la autoridad.",
+      "agentes": [
+        "hidro-seia",
+        "hidro-normativa",
+        "hidro-informes",
+        "hidro-revisor"
+      ]
+    }
   ]
 }

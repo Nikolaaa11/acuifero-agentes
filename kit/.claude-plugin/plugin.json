@@ -1,7 +1,7 @@
 {
   "name": "acuifero",
-  "version": "1.0.0",
-  "description": "Agentes y skills para hidrogeología y geología ambiental: ensayos de bombeo, hidroquímica, monitoreo, piezometría, modelos, normativa, terreno, informes y revisión.",
+  "version": "1.1.0",
+  "description": "Agentes y skills para hidrogeología y geología ambiental en minería: ensayos de bombeo, hidroquímica, salares, drenaje ácido, balance de aguas, modelos, alerta temprana, cierre, tramitación, informes y revisión.",
   "author": { "name": "Acuífero" },
   "homepage": "https://github.com/Nikolaaa11/acuifero-agentes",
   "repository": "https://github.com/Nikolaaa11/acuifero-agentes",

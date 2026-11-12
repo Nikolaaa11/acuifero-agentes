@@ -1,0 +1,5 @@
+punto,alerta,accion,sentido,unidad
+PC-01,2298.50,2298.00,bajo,m s. n. m.
+PC-02,2301.00,2300.50,bajo,m s. n. m.
+QC-04,250,400,sobre,mg/L
+PC-05,2296.00,2295.50,bajo,m s. n. m.

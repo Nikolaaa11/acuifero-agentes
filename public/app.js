@@ -449,6 +449,67 @@
           fila("Gradiente", fmt(r.gradiente) + " m/m"), fila("Dirección de flujo", fmt(r.azimut, 3) + "° desde el norte"), fila("Rumbo", r.rumbo)
         ], ["Tres pozos definen un plano: sirve como primera lectura en una zona pequeña y de un solo acuífero. Con más pozos usa la skill mapa-piezometrico."], { grafico: g });
       }
+    },
+    aba: {
+      titulo: "Balance ácido-base", que: "Clasifica una muestra de roca o relave por su potencial de generar ácido. Resultados en kg CaCO₃/t.", skill: "balance-acido-base",
+      formula: "PA = 31,25 · S (%)\nPNN = PN − PA\nrazón = PN / PA",
+      campos: function () {
+        return el("div", { class: "campos" }, [
+          campo("Azufre como sulfuro (%)", "S", "2,2"), campo("Potencial de neutralización PN (kg CaCO₃/t)", "PN", "18"),
+          campo("Razón bajo la cual genera", "rg", "1"), campo("Razón sobre la cual no genera", "rn", "2"),
+          campo("Banda de incertidumbre del PNN (±)", "lim", "20", { todo: true })
+        ]);
+      },
+      calcular: function () {
+        var S = v("S"), PN = v("PN");
+        if (!isFinite(S) || !isFinite(PN) || S < 0 || PN < 0) return salida("Clase del material", "—", "", [], [{ alerta: true, texto: "Escribe el azufre y el potencial de neutralización." }]);
+        var r = C.balanceAcidoBase({ S: S, PN: PN, razonGen: v("rg"), razonNo: v("rn"), pnnLim: v("lim") });
+        var mx = Math.max(r.PA, PN, 1), k = 250 / mx;
+        var g = svg("0 0 390 110", '<text x="8" y="34">PA</text><rect x="46" y="20" width="' + (r.PA * k).toFixed(1) + '" height="22" rx="6" fill="#ff9500"/><text x="' + (52 + r.PA * k).toFixed(1) + '" y="35">' + fmt(r.PA) +
+          '</text><text x="8" y="76">PN</text><rect x="46" y="62" width="' + (PN * k).toFixed(1) + '" height="22" rx="6" fill="#0071e3"/><text x="' + (52 + PN * k).toFixed(1) + '" y="77">' + fmt(PN) +
+          '</text><text x="46" y="104">kg CaCO₃/t</text>');
+        g.setAttribute("aria-label", "Potencial de acidez contra potencial de neutralización");
+        var notas = [];
+        if (r.porRazon !== r.porPnn) notas.push({ alerta: true, texto: "Los dos criterios no coinciden (razón: " + r.porRazon + "; potencial neto: " + r.porPnn + "). La muestra queda incierta: hace falta mineralogía o ensayo cinético." });
+        if (S < 0.1) notas.push("Con menos de 0,1 % de azufre, la razón es muy sensible al error analítico.");
+        notas.push("Los cortes por defecto son de uso común, no una norma. Usa los que exija la guía del proyecto.");
+        var chip = { "generador": "rechazada", "incierto": "dudosa", "no generador": "aceptada" }[r.clase];
+        return salida("Clase del material", r.clase.charAt(0).toUpperCase() + r.clase.slice(1), "", [
+          fila("Potencial de acidez PA", fmt(r.PA) + " kg CaCO₃/t"), fila("Potencial neto PNN", (r.PNN > 0 ? "+" : "") + fmt(r.PNN) + " kg CaCO₃/t"),
+          fila("Razón PN/PA", isFinite(r.razon) ? fmt(r.razon) : "sin PA"), fila("Según la razón", r.porRazon), fila("Según el potencial neto", r.porPnn)
+        ], notas, { antes: el("span", { class: "estado " + chip, text: r.porRazon === r.porPnn ? "Ambos criterios coinciden" : "Criterios distintos" }), grafico: g });
+      }
+    },
+    densidad: {
+      titulo: "Carga equivalente de agua dulce", que: "Lleva un nivel medido en salmuera a carga de agua dulce, para comparar pozos de distinta densidad.", skill: "salares",
+      formula: "h dulce = z + (ρ / ρ dulce) · (h − z)",
+      campos: function () {
+        return el("div", { class: "campos" }, [
+          campo("Nivel medido h (m s. n. m.)", "h", "2300,50"), campo("Cota del tramo captado z (m s. n. m.)", "z", "2280,00"),
+          campo("Densidad del agua del pozo (kg/m³)", "rho", "1205"), campo("Densidad del agua dulce (kg/m³)", "rd", "1000")
+        ]);
+      },
+      calcular: function () {
+        var h = v("h"), z = v("z"), rho = v("rho"), rd = v("rd");
+        if (![h, z, rho, rd].every(isFinite)) return salida("Carga equivalente", "—", "", [], [{ alerta: true, texto: "Completa los cuatro valores." }]);
+        var r = C.cargaEquivalente({ h: h, z: z, rho: rho, rhoDulce: rd });
+        var dos = new Intl.NumberFormat("es-CL", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var col = Math.max(h - z, r.carga - z, 0.001), k = 110 / col;
+        var g = svg("0 0 390 170", '<line x1="40" y1="140" x2="350" y2="140" stroke="#d2d2d7"/><text x="356" y="144">z</text>' +
+          '<rect x="110" y="' + (140 - (h - z) * k).toFixed(1) + '" width="56" height="' + ((h - z) * k).toFixed(1) + '" rx="6" fill="rgba(0,113,227,.55)"/>' +
+          '<rect x="224" y="' + (140 - (r.carga - z) * k).toFixed(1) + '" width="56" height="' + ((r.carga - z) * k).toFixed(1) + '" rx="6" fill="rgba(0,113,227,.18)" stroke="#0071e3"/>' +
+          '<text x="138" y="158" text-anchor="middle">salmuera</text><text x="252" y="158" text-anchor="middle">agua dulce</text>' +
+          '<text x="138" y="' + (132 - (h - z) * k).toFixed(1) + '" text-anchor="middle">' + dos.format(h) + '</text><text x="252" y="' + (132 - (r.carga - z) * k).toFixed(1) + '" text-anchor="middle">' + dos.format(r.carga) + "</text>");
+        g.setAttribute("aria-label", "Columna de salmuera y columna equivalente de agua dulce");
+        var notas = [];
+        if (r.densidad < 950 || r.densidad > 1400) notas.push({ alerta: true, texto: "Densidad fuera del rango habitual (950 a 1400 kg/m³). Revisa la unidad." });
+        if (z > h) notas.push({ alerta: true, texto: "La cota del tramo captado está sobre el nivel medido. Revisa los datos." });
+        notas.push("Sirve para comparar niveles en horizontal y trazar la piezometría. Para gradientes verticales en agua de densidad variable hace falta otro tratamiento.");
+        return salida("Carga equivalente de agua dulce", dos.format(r.carga), "m s. n. m.", [
+          fila("Diferencia con el nivel medido", (r.diferencia >= 0 ? "+" : "") + dos.format(r.diferencia) + " m"),
+          fila("Columna de agua sobre el tramo captado", dos.format(h - z) + " m"), fila("Densidad usada", fmt(r.densidad, 4) + " kg/m³")
+        ], notas, { grafico: g });
+      }
     }
   };
 
@@ -480,40 +541,53 @@
   /* ---------- manual ---------- */
   var PS = function (opcion) { return "& ([scriptblock]::Create((irm " + SITIO + "/instalar.ps1))) " + opcion; };
   var SH = function (opcion) { return "curl -fsSL " + SITIO + "/instalar.sh | bash" + (opcion ? " -s -- " + opcion : ""); };
-  var PYTHON = { id: "python", titulo: "Comprueba que tienes Python", texto: "Los cálculos lo usan y el instalador avisa si falta.", extra: function (sis) {
-    return el("p", { class: "donde" }, sis === "windows"
-      ? ["En Windows se descarga gratis desde ", el("a", { href: "https://www.python.org/downloads/", target: "_blank", rel: "noopener", text: "python.org" }), ". Al instalar, marca la casilla «Add python.exe to PATH»."]
-      : ["En Mac y Linux suele venir instalado como python3. Si falta, está en ", el("a", { href: "https://www.python.org/downloads/", target: "_blank", rel: "noopener", text: "python.org" }), "."]);
+  function esperado(lineas) { return el("pre", { class: "esperado", "aria-label": "Lo que deberías ver" }, [lineas.join("\n")]); }
+  function enlace(texto, url) { return el("a", { href: url, target: "_blank", rel: "noopener", text: texto }); }
+  var PYTHON = { id: "python", titulo: "Comprueba que tienes Python", texto: "Los cálculos lo usan. Escribe esto en la terminal:", comandoDe: function (sis) { return sis === "windows" ? "python --version" : "python3 --version"; }, extra: function (sis) {
+    return el("div", null, [
+      el("p", { class: "donde" }, ["Si responde «Python 3» seguido de un número, ya lo tienes: pasa al siguiente paso."]),
+      el("p", { class: "donde" }, sis === "windows"
+        ? ["Si dice que no se reconoce o se abre la Microsoft Store, descárgalo gratis desde ", enlace("python.org", "https://www.python.org/downloads/"), ". Al instalarlo marca la casilla «Add python.exe to PATH». Después cierra PowerShell y ábrelo de nuevo."]
+        : ["Si dice que no lo encuentra, descárgalo gratis desde ", enlace("python.org", "https://www.python.org/downloads/"), " y vuelve a abrir la Terminal."])
+    ]);
   } };
-  var PRUEBA = { id: "prueba", titulo: "Haz la primera prueba con datos de ejemplo", texto: "Pide esto. Debe darte una transmisividad cercana a 450 m²/d y un almacenamiento cercano a 2 × 10⁻⁴.",
+  var PRUEBA = { id: "prueba", titulo: "Haz la primera prueba con datos de ejemplo", texto: "Pide esto en Claude. Debe darte una transmisividad cercana a 450 m²/d y un almacenamiento cercano a 2 × 10⁻⁴.",
     pedido: "Con la skill ensayo-bombeo interpreta el archivo ensayo-bombeo.csv que viene en la carpeta ejemplos de la skill. Caudal 12 L/s, pozo de observación a 35 m, espesor saturado 40 m." };
 
   function pasosDe(donde, sis) {
+    var win = sis === "windows";
     if (donde === "code") return [
-      { id: "tener", titulo: "Ten Claude instalado y con tu sesión iniciada", texto: "Sirve la app de escritorio de Claude (pestaña Code) o Claude Code en la terminal. Claude Code viene incluido en los planes de pago de Claude." },
-      sis === "windows"
-        ? { id: "terminal", titulo: "Abre PowerShell", texto: "Menú Inicio, escribe «PowerShell» y ábrelo. No hace falta abrirlo como administrador." }
-        : { id: "terminal", titulo: "Abre la Terminal", texto: "En Mac: Cmd + Espacio y escribe «Terminal». En Linux, tu terminal de siempre." },
-      { id: "instalar", titulo: "Pega esta línea y presiona Enter", texto: "Copia " + N.agentes + " agentes y " + N.skills + " skills a la carpeta .claude de tu usuario. Si ya tenías algo con el mismo nombre, lo guarda antes en una carpeta de respaldo. No toca nada más.",
-        comando: sis === "windows" ? "irm " + SITIO + "/instalar.ps1 | iex" : SH(""),
+      { id: "tener", titulo: "Ten Claude instalado y con tu sesión iniciada", texto: "Sirve la app de escritorio de Claude (pestaña Code) o Claude Code en la terminal. Claude Code viene incluido en los planes de pago de Claude.",
+        extra: function () { return el("p", { class: "donde" }, ["Si aún no la tienes, la app se descarga desde ", enlace("claude.ai/download", "https://claude.ai/download"), ". Ábrela e inicia sesión antes de seguir."]); } },
+      win ? { id: "terminal", titulo: "Abre PowerShell", texto: "Menú Inicio, escribe «PowerShell» y ábrelo. No hace falta abrirlo como administrador. Ojo: tiene que ser PowerShell (ventana azul o negra con «PS» al inicio de la línea), no el Símbolo del sistema." }
+          : { id: "terminal", titulo: "Abre la Terminal", texto: "En Mac: Cmd + Espacio y escribe «Terminal». En Linux, tu terminal de siempre." },
+      PYTHON,
+      { id: "instalar", titulo: "Pega esta línea y presiona Enter", texto: "Copia " + N.agentes + " agentes y " + N.skills + " skills a la carpeta .claude de tu usuario y comprueba sola que los cálculos funcionen. Si ya tenías algo con el mismo nombre, lo guarda antes en una carpeta de respaldo. No toca nada más.",
+        comando: win ? "irm " + SITIO + "/instalar.ps1 | iex" : SH(""),
         extra: function () {
           return el("div", null, [
+            el("p", { class: "donde", text: "En unos segundos deberías ver esto:" }),
+            esperado(["Kit Acuifero " + D.version + " instalado.", "  " + N.agentes + " agentes en " + (win ? "C:\\Users\\tu-nombre\\.claude\\agents" : "/Users/tu-nombre/.claude/agents"),
+              "  " + N.skills + " skills en " + (win ? "C:\\Users\\tu-nombre\\.claude\\skills" : "/Users/tu-nombre/.claude/skills"), "  Comprobación: los 13 cálculos funcionan (Python 3.12)."]),
+            el("p", { class: "donde", text: "Si la línea de comprobación no aparece, falta Python: vuelve al paso anterior. Puedes correr el instalador las veces que quieras." }),
             el("details", null, [el("summary", { text: "¿Prefieres instalarlo como plugin?" }),
               el("p", { class: "donde", text: "Dentro de Claude Code escribe estos dos comandos, uno después del otro. En la app de escritorio también puedes usar el botón + junto al cuadro de mensaje y elegir «Add plugins»." }),
               comando("/plugin marketplace add " + D.repo), comando("/plugin install acuifero@acuifero-kit"),
               el("p", { class: "donde", text: "Como plugin, los agentes se llaman con el prefijo acuifero: (por ejemplo, acuifero:hidro-ensayos)." })]),
-            el("details", null, [el("summary", { text: "¿Solo para un proyecto, no para todo el equipo?" }),
+            el("details", null, [el("summary", { text: "¿Solo para un proyecto?" }),
               el("p", { class: "donde", text: "Abre la terminal dentro de la carpeta del proyecto y usa esta variante. Instala en la carpeta .claude de ese proyecto." }),
-              comando(sis === "windows" ? PS("-Proyecto") : SH("--proyecto"))])
+              comando(win ? PS("-Proyecto") : SH("--proyecto"))])
           ]);
         } },
-      PYTHON,
-      { id: "reiniciar", titulo: "Cierra y vuelve a abrir Claude, y pregunta qué tienes", texto: "Claude lee los agentes y las skills al iniciar.", pedido: "¿Qué agentes y skills del kit Acuífero tengo disponibles? Usa la skill guia-acuifero." },
+      { id: "comprobar", titulo: "Mira el detalle de la comprobación", texto: "Opcional, pero útil la primera vez: corre cada cálculo con sus datos de ejemplo y te muestra el resultado uno por uno.",
+        comando: win ? 'python "$HOME\\.claude\\skills\\guia-acuifero\\scripts\\comprobar.py"' : "python3 ~/.claude/skills/guia-acuifero/scripts/comprobar.py",
+        extra: function () { return el("p", { class: "donde", text: "Tiene que terminar con «Todo funciona: los 13 cálculos dieron el resultado esperado»." }); } },
+      { id: "reiniciar", titulo: "Cierra Claude del todo y vuelve a abrirlo", texto: "Claude lee los agentes y las skills al iniciar. Después pregunta qué tienes:", pedido: "¿Qué agentes y skills del kit Acuífero tengo disponibles? Usa la skill guia-acuifero." },
       PRUEBA,
-      { id: "proyecto", titulo: "Prepara tu primer proyecto", texto: "Abre Claude en la carpeta del proyecto y pide esto. Crea las carpetas y el archivo de contexto que leen todos los agentes.", pedido: "Usa la skill inicio-proyecto en esta carpeta." }
+      { id: "proyecto", titulo: "Prepara tu primer proyecto", texto: "Abre Claude en la carpeta del proyecto y pide esto. Crea las carpetas y el archivo de contexto que leen todos los agentes, con las reglas de confidencialidad.", pedido: "Usa la skill inicio-proyecto en esta carpeta." }
     ];
     if (donde === "cowork") return [
-      { id: "abrir", titulo: "Abre Personalizar y entra a Plugins", texto: "En claude.ai o en la app de Claude: Personalizar (Customize) y luego Plugins. Los nombres de los menús pueden variar según el idioma de la app." },
+      { id: "abrir", titulo: "Abre Personalizar y entra a Plugins", texto: "En claude.ai o en la app de Claude: Personalizar (Customize) y luego Plugins. Los nombres de los menús pueden variar según el idioma de la app. Este camino no instala nada en el computador, así que sirve también en equipos de empresa." },
       { id: "agregar", titulo: "Agrega el repositorio del kit", texto: "Elige Agregar (Add), luego Agregar marketplace (Add marketplace), y escribe esto:", comando: D.repo },
       { id: "plugin", titulo: "Instala el plugin «acuifero»", texto: "Aparece dentro del marketplace acuifero-kit. En Cowork se cargan los agentes y las skills. En el chat de claude.ai se cargan solo las skills: los agentes funcionan en Cowork y en Claude Code." },
       { id: "zip", titulo: "Otra forma: sube solo las skills que quieras", texto: "En Configuración, Capacidades, activa «Ejecución de código y creación de archivos». Después, en Personalizar, Skills, sube el archivo .zip de cada skill.",
@@ -524,16 +598,16 @@
     ];
     return [
       { id: "hermes", titulo: "Instala Hermes Agent", texto: "Descárgalo desde su sitio oficial. Tiene app de escritorio para Windows, Mac y Linux.",
-        extra: function () { return el("p", { class: "donde" }, [el("a", { href: "https://hermes-agent.nousresearch.com/", target: "_blank", rel: "noopener", text: "hermes-agent.nousresearch.com" })]); } },
+        extra: function () { return el("p", { class: "donde" }, [enlace("hermes-agent.nousresearch.com", "https://hermes-agent.nousresearch.com/")]); } },
       { id: "modelo", titulo: "Conecta un modelo", texto: "En la terminal escribe este comando y elige el proveedor. Para usar Claude necesitas una clave de la API de Anthropic, o Claude Max con créditos de uso extra.", comando: "hermes model" },
+      PYTHON,
       { id: "kit", titulo: "Instala el kit con la opción de Hermes", texto: "Instala todo en Claude y, además, copia las skills a la carpeta de Hermes. En Hermes los " + N.agentes + " agentes quedan como skills con el mismo nombre.",
-        comando: sis === "windows" ? PS("-Hermes") : SH("--hermes"),
+        comando: win ? PS("-Hermes") : SH("--hermes"),
         extra: function () {
           return el("details", null, [el("summary", { text: "¿Ya usas Claude Code?" }),
             el("p", { class: "donde", text: "Según su documentación, Hermes puede traer tus conectores, skills e instrucciones desde Claude Code con este comando:" }),
             comando("hermes import-agent claude-code")]);
         } },
-      PYTHON,
       { id: "prueba", titulo: "Haz la primera prueba", texto: "Abre el chat de Hermes y pregunta qué tienes.", comando: "hermes chat", pedido: "¿Qué skills del kit Acuífero tengo? Usa guia-acuifero y después interpreta el ensayo de ejemplo de la skill ensayo-bombeo: caudal 12 L/s, r = 35 m, espesor 40 m." }
     ];
   }
@@ -550,6 +624,7 @@
       var clave = manual.donde + (manual.donde === "cowork" ? "" : "-" + manual.sis) + "-" + p.id;
       var marca = el("button", { type: "button", class: "marca-paso", "aria-pressed": String(!!hechos[clave]), "aria-label": "Marcar el paso " + (i + 1) + " como hecho" }, [el("span", { text: String(i + 1) })]);
       var li = el("li", { class: "paso" + (hechos[clave] ? " hecho" : "") }, [marca, el("h4", { text: p.titulo }), el("p", { text: p.texto })]);
+      if (p.comandoDe) li.appendChild(comando(p.comandoDe(manual.sis)));
       if (p.comando) li.appendChild(comando(p.comando));
       if (p.pedido) li.appendChild(comando(p.pedido, { texto: true, claro: true }));
       if (p.extra) li.appendChild(p.extra(manual.sis));
@@ -579,6 +654,34 @@
   quitar.appendChild(comando(PS("-Quitar")));
   quitar.appendChild(el("p", { class: "etiqueta", text: "Mac o Linux (Terminal)" }));
   quitar.appendChild(comando(SH("--quitar")));
+
+  /* ---------- si algo falla ---------- */
+  var ayuda = $("#lista-ayuda");
+  [
+    { q: "PowerShell dice que «irm» no se reconoce", r: ["Estás en el Símbolo del sistema, no en PowerShell. Cierra esa ventana, abre el menú Inicio, escribe «PowerShell» y pega la línea ahí."] },
+    { q: "Windows dice que «python» no se reconoce, o se abre la Microsoft Store", r: ["Falta Python. Instálalo desde python.org y, en la primera pantalla del instalador, marca la casilla «Add python.exe to PATH». Cierra PowerShell, ábrelo de nuevo y vuelve a correr el instalador del kit: no pasa nada por correrlo dos veces."] },
+    { q: "La descarga falla o el computador de la empresa bloquea el instalador", r: ["Instálalo a mano. Descarga el kit, descomprímelo y copia las carpetas «agents» y «skills» dentro de la carpeta .claude de tu usuario (C:\\Users\\tu-nombre\\.claude en Windows; /Users/tu-nombre/.claude en Mac). Si la carpeta .claude no existe, créala.",
+      el("p", null, [el("a", { class: "btn btn-gris", style: "font-size:14px;padding:8px 15px", href: "descargas/acuifero-kit.zip", download: "", text: "Descargar el kit (.zip)" })]),
+      "Si tu empresa no permite instalar nada, usa el camino «Cowork o claude.ai» de arriba: funciona desde la cuenta, sin tocar el equipo."] },
+    { q: "Claude no muestra los agentes", r: ["Cierra Claude del todo (en Windows, también desde el ícono junto al reloj) y ábrelo otra vez. Después pídele esto:", comando("Lista los agentes que tienes disponibles cuyo nombre empieza con hidro- o geo-.", { texto: true, claro: true }),
+      "Si no aparecen, revisa que existan archivos dentro de la carpeta .claude\\agents de tu usuario. Si la carpeta está vacía, corre de nuevo el instalador."] },
+    { q: "Un cálculo da error o un resultado raro", r: ["Corre la comprobación. Te dice cuál de los 13 cálculos falla y por qué.", "Windows:", comando('python "$HOME\\.claude\\skills\\guia-acuifero\\scripts\\comprobar.py"'),
+      "Mac o Linux:", comando("python3 ~/.claude/skills/guia-acuifero/scripts/comprobar.py"), "Si todo sale bien ahí, el problema está en tu archivo: pídele a Claude que revise los encabezados y las unidades contra lo que pide la skill."] },
+    { q: "Quiero dejar todo como estaba y partir de nuevo", r: ["Desinstala y vuelve a instalar. Lo que habías modificado queda guardado en la carpeta acuifero-respaldo.", "Windows:", comando(PS("-Quitar")), "Mac o Linux:", comando(SH("--quitar"))] }
+  ].forEach(function (it) {
+    var d = el("details", null, [el("summary", { text: it.q })]);
+    it.r.forEach(function (x) { d.appendChild(typeof x === "string" ? el("p", { text: x }) : x); });
+    ayuda.appendChild(d);
+  });
+
+  /* ---------- líneas de trabajo ---------- */
+  var grillaL = $("#grilla-lineas");
+  (D.lineas || []).forEach(function (l) {
+    grillaL.appendChild(el("article", { class: "linea" }, [el("h4", { text: l.nombre }), el("p", { text: l.desc }),
+      el("div", { class: "chips" }, l.agentes.map(function (id) {
+        return el("button", { type: "button", onclick: function () { abrirFicha(id); } }, [el("i", { style: "background:" + COLOR.agente }), agentes[id].titulo]);
+      }))]));
+  });
 
   /* ---------- recetas ---------- */
   var recLista = $("#recetas-lista"), recCuerpo = $("#recetas-cuerpo"), recActiva = D.rutas[0].id;

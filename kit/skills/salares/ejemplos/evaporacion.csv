@@ -1,0 +1,11 @@
+punto,superficie,profundidad,evaporacion
+EV-01,costra,0.05,5.424
+EV-02,costra,0.10,4.535
+EV-03,costra,0.20,3.580
+EV-04,costra,0.30,2.996
+EV-05,costra,0.50,1.653
+EV-06,costra,0.70,1.038
+EV-07,costra,1.00,0.497
+EV-08,costra,1.30,0.235
+EV-09,costra,1.60,0.110
+EV-10,costra,2.00,0.039

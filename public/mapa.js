@@ -121,9 +121,9 @@
   /* ---------- disposiciones ---------- */
   function repartir(lista, y, xa, xb, salto) {
     var n = lista.length, paso = (xb - xa) / n, ancho = Math.max.apply(null, lista.map(function (q) { return q.w; }));
-    var alterna = salto && paso < ancho + 12;
-    lista.forEach(function (q, i) { q.tx = xa + (i + 0.5) * paso; q.ty = y + (alterna && i % 2 ? salto : 0); });
-    return alterna ? salto : 0;
+    var filas = salto ? Math.min(3, Math.max(1, Math.ceil((ancho + 14) / paso))) : 1;
+    lista.forEach(function (q, i) { q.tx = xa + (i + 0.5) * paso; q.ty = y + (i % filas) * (salto || 0); });
+    return (filas - 1) * (salto || 0);
   }
   function promedio(id, eje, tipos) {
     var v = vecinos[id].filter(function (o) { return tipos.indexOf(N[o].tipo) >= 0; });
@@ -135,7 +135,7 @@
   }
 
   function flujo() {
-    var col = 152, izq = 20, ancho = col * D.etapas.length, der = izq + ancho;
+    var col = 170, izq = 20, ancho = col * D.etapas.length, der = izq + ancho;
     deco = [{ t: "rotulo", x: izq, y: 18, texto: "Dónde se instala" }];
     repartir(de("plataforma"), 46, izq + ancho / 2 - 280, izq + ancho / 2 + 280);
     var maximo = 0;
@@ -158,18 +158,18 @@
   }
 
   function tipos() {
-    var xs = { plataforma: 110, agente: 330, skill: 560, calc: 790, app: 1000 }, pasos = { plataforma: 74, agente: 42, skill: 50, calc: 56, app: 52 }, cy = 340;
+    var cy = 320;
     deco = [];
-    function columna(tipo, lista) {
-      var p = pasos[tipo], y0 = cy - (lista.length - 1) * p / 2;
-      lista.forEach(function (n, i) { n.tx = xs[tipo]; n.ty = y0 + i * p; n.oculto = false; });
-      deco.push({ t: "rotulo", x: xs[tipo], y: 30, texto: TIPOS[tipo], cls: "titulo", ancla: "middle" });
+    function columna(tipo, lista, xs, paso) {
+      var porCol = Math.ceil(lista.length / xs.length), y0 = cy - (porCol - 1) * paso / 2;
+      lista.forEach(function (n, i) { n.tx = xs[Math.floor(i / porCol)]; n.ty = y0 + (i % porCol) * paso; n.oculto = false; });
+      deco.push({ t: "rotulo", x: (xs[0] + xs[xs.length - 1]) / 2, y: 30, texto: TIPOS[tipo], cls: "titulo", ancla: "middle" });
     }
-    columna("agente", de("agente"));
-    columna("plataforma", de("plataforma"));
-    columna("skill", ordenar(de("skill"), "ty", ["agente"]));
-    columna("calc", ordenar(de("calc"), "ty", ["skill"]));
-    columna("app", ordenar(de("app"), "ty", ["agente", "skill"]));
+    columna("agente", de("agente"), [330, 506], 46);
+    columna("plataforma", de("plataforma"), [110], 74);
+    columna("skill", ordenar(de("skill"), "ty", ["agente"]), [730, 916], 52);
+    columna("calc", ordenar(de("calc"), "ty", ["skill"]), [1108], 52);
+    columna("app", ordenar(de("app"), "ty", ["agente", "skill"]), [1290], 52);
     E.orient = "h";
   }
 
@@ -194,7 +194,7 @@
       });
     }
     anillo(a1, a2.length ? 290 : 360, a2.length ? 150 : 210, 0);
-    anillo(a2, 520, 292, Math.PI / Math.max(a2.length, 1));
+    anillo(a2, 590, 300, Math.PI / Math.max(a2.length, 1));
     nodos.forEach(function (n) { if (n.oculto) { n.tx = 555; n.ty = 330; } });
     deco = [{ t: "rotulo", x: 555, y: 16, texto: "Conexiones de «" + c.nombre + "»", cls: "titulo", ancla: "middle" }];
     E.orient = "r";
@@ -261,7 +261,7 @@
   function animar(destinoVB, dur) {
     cancelAnimationFrame(cuadro);
     var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var desde = nodos.map(function (n) { return [n.x, n.y]; }), v0 = { x: vb.x, y: vb.y, w: vb.w, h: vb.h }, t0 = performance.now();
+    var desde = nodos.map(function (n) { return [isFinite(n.x) ? n.x : n.tx, isFinite(n.y) ? n.y : n.ty]; }), v0 = { x: vb.x, y: vb.y, w: vb.w, h: vb.h }, t0 = performance.now();
     if (!dur || quieto || document.hidden) {
       // Sin animación: se aplica de inmediato (también cuando la pestaña está en segundo plano)
       nodos.forEach(function (n) { n.x = n.tx; n.y = n.ty; });

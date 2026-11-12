@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Acuífero · Agentes para hidrogeología</title>
-<meta name="description" content="Trece agentes y nueve skills con cálculos probados para hidrogeología y geología ambiental. Se instalan en Claude con una línea. Incluye mapa interactivo, calculadoras y manual.">
+<meta name="description" content="Veinte agentes y quince skills con cálculos probados para hidrogeología y geología ambiental en minería. Se instalan en Claude con una línea. Incluye mapa interactivo, calculadoras y manual paso a paso.">
 <meta name="theme-color" content="#ffffff">
 <meta name="color-scheme" content="light">
 <meta property="og:title" content="Acuífero · Agentes para hidrogeología">
-<meta property="og:description" content="Un equipo de agentes para el agua subterránea: ensayos de bombeo, hidroquímica, monitoreo, modelos, normativa, terreno, informes y revisión.">
+<meta property="og:description" content="Un equipo de agentes para el agua subterránea: ensayos de bombeo, hidroquímica, salares, drenaje ácido, agua en la faena, modelos, alerta temprana, cierre e informes.">
 <meta property="og:type" content="website">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,7 +45,7 @@
     <p class="sobre aparecer">Kit de agentes para Claude</p>
     <h1 class="aparecer">Acuífero</h1>
     <p class="lema aparecer">Un equipo de agentes<br>para el agua subterránea.</p>
-    <p class="bajada aparecer"><span data-n="agentes">13</span> agentes y <span data-n="skills">9</span> skills con cálculos probados para hidrogeología y geología ambiental. Se instalan con una línea.</p>
+    <p class="bajada aparecer"><span data-n="agentes">13</span> agentes y <span data-n="skills">9</span> skills con cálculos probados para hidrogeología y geología ambiental en minería. Se instalan con una línea.</p>
     <p class="acciones aparecer">
       <a class="btn" href="#manual">Instalar el kit</a>
       <a class="enlace-flecha" href="#mapa">Ver el mapa</a>
@@ -106,7 +106,7 @@
       <div><dt data-n="agentes">13</dt><dd>agentes especializados</dd></div>
       <div><dt data-n="skills">9</dt><dd>skills con plantillas y scripts</dd></div>
       <div><dt data-n="calculadoras">6</dt><dd>calculadoras en esta página</dd></div>
-      <div><dt data-n="pruebas">93</dt><dd>pruebas automáticas aprobadas</dd></div>
+      <div><dt data-n="pruebas">156</dt><dd>pruebas automáticas aprobadas</dd></div>
     </dl>
   </div>
 </section>
@@ -115,16 +115,16 @@
 <section class="banda gris" id="que-trae">
   <div class="ancho">
     <p class="sobre aparecer">Qué trae</p>
-    <h2 class="aparecer">Hecho para el trabajo<br>de una consultora de aguas.</h2>
+    <h2 class="aparecer">Hecho para una consultora<br>de aguas y geoquímica.</h2>
     <div class="bento">
       <article class="tarjeta grande aparecer">
         <h3>Agentes que conocen el oficio</h3>
-        <p>Ensayos de bombeo, hidroquímica, monitoreo, modelos, normativa, terreno, informes y revisión. Cada agente tiene su método de trabajo, sabe qué pedir y dice qué entrega.</p>
+        <p>Ensayos de bombeo, hidroquímica, salares, drenaje ácido, agua en la faena, modelos, alerta temprana, cierre y tramitación. Cada agente tiene su método de trabajo, sabe qué pedir y dice qué entrega.</p>
         <ul class="pasos-mini" id="mini-etapas" aria-label="Etapas de un proyecto"></ul>
       </article>
       <article class="tarjeta aparecer">
         <h3>Cálculos que se pueden auditar</h3>
-        <p>Seis scripts en Python sin dependencias. Cada resultado deja el comando que lo produjo, para que cualquiera lo repita.</p>
+        <p>Doce scripts en Python sin dependencias. Cada resultado deja el comando que lo produjo, para que cualquiera lo repita.</p>
         <pre class="mini-codigo" aria-hidden="true">T = 2,303·Q / (4π·Δs)
 S = 2,25·T·t₀ / r²</pre>
       </article>
@@ -134,13 +134,17 @@ S = 2,25·T·t₀ / r²</pre>
       </article>
       <article class="tarjeta aparecer">
         <h3>Tus datos, tus reglas</h3>
-        <p>Los agentes no pegan datos de clientes en buscadores. Antes de cargar información confidencial a una IA, confirma la política de tu empresa y del contrato.</p>
+        <p>Los agentes no pegan datos de clientes en buscadores, y una skill oculta nombres y coordenadas antes de trabajar. Aun así, confirma primero la política de tu empresa y del contrato.</p>
       </article>
       <article class="tarjeta aparecer">
         <h3>Tú decides y firmas</h3>
         <p>Los agentes preparan y separan dato, cálculo e interpretación. La profesional a cargo revisa, decide y firma.</p>
       </article>
     </div>
+
+    <h3 class="subtitulo aparecer" id="lineas">Del pozo al plan de cierre</h3>
+    <p class="entrada chica aparecer">Las líneas de trabajo de una consultora de aguas para la gran minería, y los agentes que cubren cada una. Toca un agente para abrir su ficha.</p>
+    <div class="lineas aparecer" id="grilla-lineas"></div>
   </div>
 </section>
 
@@ -148,7 +152,7 @@ S = 2,25·T·t₀ / r²</pre>
 <section class="banda" id="agentes">
   <div class="ancho">
     <p class="sobre aparecer">Agentes</p>
-    <h2 class="aparecer">Trece agentes,<br>siete etapas de un proyecto.</h2>
+    <h2 class="aparecer">Veinte agentes,<br>ocho etapas de un proyecto.</h2>
     <p class="entrada aparecer">Elige una etapa o abre un agente para ver qué necesita, qué entrega y un pedido listo para copiar.</p>
     <div class="filtros aparecer" id="filtros-etapa" role="group" aria-label="Filtrar agentes por etapa"></div>
     <div class="grilla agentes" id="grilla-agentes" aria-live="polite"></div>
@@ -159,7 +163,7 @@ S = 2,25·T·t₀ / r²</pre>
 <section class="banda gris" id="skills">
   <div class="ancho">
     <p class="sobre aparecer">Skills</p>
-    <h2 class="aparecer">Nueve skills.<br>Seis de ellas calculan.</h2>
+    <h2 class="aparecer">Quince skills.<br>Doce de ellas calculan.</h2>
     <p class="entrada aparecer">Los agentes piensan y redactan; las skills hacen las cuentas con scripts probados. Abre una para ver el resultado real con los datos de ejemplo.</p>
     <div class="grilla skills" id="grilla-skills"></div>
     <div class="muestras">
@@ -263,6 +267,10 @@ S = 2,25·T·t₀ / r²</pre>
       <ol class="pasos" id="manual-pasos"></ol>
     </div>
 
+    <h3 class="subtitulo aparecer" id="ayuda">Si algo falla</h3>
+    <p class="entrada chica aparecer">Los tropiezos más comunes al instalar y cómo salir de cada uno.</p>
+    <div class="preguntas ayuda aparecer" id="lista-ayuda"></div>
+
     <h3 class="subtitulo aparecer" id="recetas">Recetas: qué pedir en cada caso</h3>
     <p class="entrada chica aparecer">Elige lo que tienes que hacer y sigue los pasos. Cada uno trae el pedido exacto para copiar.</p>
     <div class="recetas aparecer">
@@ -355,12 +363,12 @@ S = 2,25·T·t₀ / r²</pre>
     <h2 class="aparecer">Lo que conviene saber.</h2>
     <div class="preguntas" id="lista-preguntas">
       <details class="aparecer"><summary>¿Cuánto cuesta?</summary><p>El kit es gratuito y de código abierto, con licencia MIT. Necesitas un plan de Claude que incluya Claude Code o Cowork. Hermes Agent también es gratuito, pero el modelo que use se paga aparte.</p></details>
-      <details class="aparecer"><summary>¿Puedo cargar datos de clientes?</summary><p>Eso lo define tu empresa y el contrato del proyecto, no el kit. Antes de subir información confidencial a cualquier herramienta de IA, confirma qué permite la política de tu empresa. Mientras tanto, practica con los datos de ejemplo, que son ficticios. Las calculadoras de esta página corren en tu navegador y no envían nada.</p></details>
-      <details class="aparecer"><summary>¿Los resultados son confiables?</summary><p>Los cálculos están verificados con <span data-n="pruebas">93</span> pruebas automáticas contra valores conocidos, y puedes repetirlos con el mismo comando. La interpretación de los agentes es un borrador experto y puede equivocarse: revísala como revisarías el trabajo de un colega nuevo y pásala por hidro-revisor.</p></details>
+      <details class="aparecer"><summary>¿Puedo cargar datos de clientes?</summary><p>Eso lo define tu empresa y el contrato del proyecto, no el kit. Con clientes de la gran minería suele haber cláusulas de confidencialidad estrictas: antes de subir información a cualquier herramienta de IA, confirma por escrito qué permite la política de tu empresa.</p><p>Mientras tanto hay tres caminos seguros: practicar con los datos de ejemplo, que son ficticios; trabajar con informes y datos que ya son públicos; y usar la skill anonimizar-datos, que cambia nombres por códigos y traslada las coordenadas antes de trabajar, con la clave guardada solo en tu equipo. Anonimizar reduce el riesgo, pero no reemplaza la autorización. Las calculadoras de esta página corren en tu navegador y no envían nada.</p></details>
+      <details class="aparecer"><summary>¿Los resultados son confiables?</summary><p>Los cálculos están verificados con <span data-n="pruebas">156</span> pruebas automáticas contra valores conocidos, y puedes repetirlos con el mismo comando. La interpretación de los agentes es un borrador experto y puede equivocarse: revísala como revisarías el trabajo de un colega nuevo y pásala por hidro-revisor.</p></details>
       <details class="aparecer"><summary>¿Sirve fuera de Chile?</summary><p>Sí. Los métodos son generales. La búsqueda de normativa parte por Chile; para otro país, indícalo en el archivo CLAUDE.md del proyecto y hidro-normativa buscará las fuentes oficiales de ese país.</p></details>
       <details class="aparecer"><summary>¿Necesito saber programar?</summary><p>No. Le pides las cosas a Claude en español y él corre los scripts. Solo necesitas tener Python instalado; el instalador te avisa si falta.</p></details>
       <details class="aparecer"><summary>¿Cómo lo actualizo o lo quito?</summary><p>Para actualizar, corre de nuevo el instalador: reemplaza lo anterior y guarda respaldo de lo que hayas modificado. Para quitarlo:</p><div id="quitar-comandos"></div></details>
-      <details class="aparecer"><summary>¿Qué no hace el kit?</summary><p>No reemplaza el criterio profesional, no firma informes y no garantiza que una norma esté vigente: la busca y la cita para que tú la confirmes. Los scripts cubren Theis y Cooper-Jacob, no todos los métodos de ensayo; para Hantush, Neuman o slug tests el agente escribe el cálculo aparte y lo avisa.</p></details>
+      <details class="aparecer"><summary>¿Qué no hace el kit?</summary><p>No reemplaza el criterio profesional, no firma informes y no garantiza que una norma esté vigente: la busca y la cita para que tú la confirmes. Los scripts cubren Theis y Cooper-Jacob, no todos los métodos de ensayo; para Hantush, Neuman o slug tests el agente escribe el cálculo aparte y lo avisa. El kit escribe los archivos de entrada de PHREEQC, pero no trae ni ejecuta PHREEQC, MODFLOW ni otros programas de modelación: esos se instalan aparte.</p></details>
     </div>
   </div>
 </section>

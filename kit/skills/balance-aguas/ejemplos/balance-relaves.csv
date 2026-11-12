@@ -1,0 +1,25 @@
+periodo,componente,tipo,valor
+2025-01,Agua con la pulpa,entrada,1200000
+2025-01,Precipitación directa,entrada,5000
+2025-01,Escorrentía de la cuenca,entrada,2000
+2025-01,Recirculación a planta,salida,780000
+2025-01,Evaporación,salida,95000
+2025-01,Agua retenida en poros,salida,290000
+2025-01,Infiltración,salida,30000
+2025-01,Variación de la laguna,almacenamiento,10000
+2025-02,Agua con la pulpa,entrada,1150000
+2025-02,Precipitación directa,entrada,60000
+2025-02,Escorrentía de la cuenca,entrada,45000
+2025-02,Recirculación a planta,salida,760000
+2025-02,Evaporación,salida,80000
+2025-02,Agua retenida en poros,salida,275000
+2025-02,Infiltración,salida,30000
+2025-02,Variación de la laguna,almacenamiento,40000
+2025-03,Agua con la pulpa,entrada,1180000
+2025-03,Precipitación directa,entrada,0
+2025-03,Escorrentía de la cuenca,entrada,0
+2025-03,Recirculación a planta,salida,800000
+2025-03,Evaporación,salida,90000
+2025-03,Agua retenida en poros,salida,285000
+2025-03,Infiltración,salida,30000
+2025-03,Variación de la laguna,almacenamiento,-30000

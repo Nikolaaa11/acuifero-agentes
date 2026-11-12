@@ -8,8 +8,8 @@
     {
       "name": "acuifero",
       "source": "./kit",
-      "description": "Trece agentes y nueve skills con cálculos probados: ensayos de bombeo, balance iónico y Piper, tendencias, piezometría, calibración de modelos, normativa, terreno, informes y revisión.",
-      "version": "1.0.0",
+      "description": "Veinte agentes y quince skills con cálculos probados: ensayos de bombeo, balance iónico y Piper, tendencias, piezometría, salares, balance ácido-base, balance de aguas, entrada de PHREEQC, umbrales de alerta, anonimizado, informes y revisión.",
+      "version": "1.1.0",
       "category": "productivity"
     }
   ]
